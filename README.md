@@ -15,13 +15,13 @@
 ## Documentation
 
 ## Use Case Diagram
-![Use Case Diagram](diagrams/UseCase Diagram.png)
+![Use Case Diagram](docs/diagrams/UseCase%20Diagram.png)
 
 ## ER Diagram
-![ER Diagram](diagrams/ER_Diagram.png)
+![ER Diagram](docs/diagrams/ER_Diagram.png)
 
 ## Relational Database Schema
-![ Relational Database Schema](diagrams/RelationalDatabaseSchema.png)
+![ Relational Database Schema](docs/diagrams/RelationalDatabaseSchema.png)
 
 - **Diagrams:** `/docs/diagrams`  
   - Use Case Diagram  
