@@ -1,0 +1,17 @@
+# Python virtual environment
+backend/venv/.env
+backend/venv/Include/
+backend/venv/Lib/
+backend/venv/Scripts/
+backend/venv/pyvenv.cfg
+
+
+
+# Environment variables
+.env
+
+# Node modules (frontend)
+frontend/node_modules/
+
+# Optional: log files
+*.log
