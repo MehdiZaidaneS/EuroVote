@@ -13,3 +13,5 @@ def get_users(db: Session):
 
 def get_user(db: Session, id: int):
     return db.get(User, id)
+
+
