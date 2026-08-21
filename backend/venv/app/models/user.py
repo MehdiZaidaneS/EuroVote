@@ -7,6 +7,4 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
-
-    rooms = relationship("Room", back_populates="creator")
     points = relationship("Points", back_populates="player")

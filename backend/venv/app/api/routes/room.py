@@ -18,11 +18,11 @@ def get_db():
 
 @router.post("/", response_model=RoomResponse)
 def create_room_endpoint(room: RoomCreate, db: Session = Depends(get_db)):
-    return create_room(db, room.name, room.creator_id)
+    return create_room(db, room.name)
 
 
-@router.get("/{room_id}", response_model=RoomResponse)
-def get_room_with_id(room_id: int,db:Session = Depends(get_db)):
-    return get_room(db, room_id)
+@router.get("/{room_code}", response_model=RoomResponse)
+def get_room_with_id(room_code: str ,db:Session = Depends(get_db)):
+    return get_room(db, room_code)
     
 
