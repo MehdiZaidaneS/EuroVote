@@ -17,3 +17,19 @@ export async function createRoom(name) {
 
     return await response.json();
 }
+
+
+export async function joinRoom(code){
+    const response = await fetch(`${API_URL}/rooms/${code}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to create room");
+    }
+
+    return await response.json();
+}

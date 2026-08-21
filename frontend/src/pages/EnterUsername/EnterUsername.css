@@ -1,0 +1,9 @@
+.username-selection{
+    display: flex;
+    flex-direction: column;
+}
+
+.username-selection button{
+    margin-top: 10px;
+    margin-bottom: 20px;
+}

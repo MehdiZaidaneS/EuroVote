@@ -2,17 +2,21 @@
 import { useState } from 'react';
 import { createRoom } from "../../api/roomApi";
 import './CreateRoom.css'
+import { useRoom } from '../../RoomContext';
+import { useNavigate } from 'react-router';
 
 function CreateRoom() {
 
     const [year, setYear] = useState("");
-    const [room, setRoom] = useState({})
+    const {setRoom} = useRoom()
+    const navigate = useNavigate()
     
     const handleCreateRoom = async () => {
         try {
             const room = await createRoom(`Eurovision ${year}`);
-            setRoom(room)
-            console.log("Created room:", room);
+            setRoom(room);
+            
+            navigate("/enter-username")
         } catch (error) {
             console.error(error);
         }
