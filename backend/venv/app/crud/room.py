@@ -3,6 +3,7 @@ import string
 
 from sqlalchemy.orm import Session
 from models.room import Room
+from models.user import User
 
 
 def create_room(db: Session, name: str):
@@ -12,6 +13,27 @@ def create_room(db: Session, name: str):
     db.commit()
     db.refresh(new_room)
     return new_room
+
+
+def join_room(db: Session, code: str, user_id: int):
+    room = db.query(Room).filter(Room.code == code).first()
+    user = db.get(User, user_id)
+
+    if room is None:
+        return None
+
+    if user is None:
+        return None
+
+    if user in room.players:
+        return room
+
+    room.players.append(user)
+
+    db.commit()
+    db.refresh(room)
+
+    return room
 
 
 def get_all_rooms(db: Session):

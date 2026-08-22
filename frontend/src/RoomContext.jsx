@@ -6,7 +6,7 @@ export function RoomProvider({ children }) {
     const [room, setRoom] = useState(null);
 
     return (
-        <RoomContext.Provider value={{ room, setRoom }}>
+        <RoomContext.Provider value={{ room, setRoom}}>
             {children}
         </RoomContext.Provider>
     );

@@ -1,6 +1,6 @@
 
 import './JoinRoom.css'
-import { joinRoom } from '../../api/roomApi'
+import { getRoom } from '../../api/roomApi'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useRoom } from '../../RoomContext'
@@ -14,7 +14,7 @@ function JoinRoom() {
 
   const handleJoinRoom = async () => {
     try {
-      const room = await joinRoom(code)
+      const room = await getRoom(code)
       setRoom(room)
       navigate("/enter-username")
 
