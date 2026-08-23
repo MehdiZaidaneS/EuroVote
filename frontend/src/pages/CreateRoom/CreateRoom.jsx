@@ -13,7 +13,7 @@ function CreateRoom() {
     
     const handleCreateRoom = async () => {
         try {
-            const room = await createRoom(`Eurovision ${year}`);
+            const room = await createRoom(year);
             setRoom(room);
             
             navigate("/enter-username")

@@ -6,9 +6,9 @@ from models.room import Room
 from models.user import User
 
 
-def create_room(db: Session, name: str):
+def create_room(db: Session, year: int):
     code = ''.join(random.choices(string.ascii_uppercase, k=10))
-    new_room = Room(name=name, code= code)
+    new_room = Room(year=year, code= code)
     db.add(new_room)
     db.commit()
     db.refresh(new_room)

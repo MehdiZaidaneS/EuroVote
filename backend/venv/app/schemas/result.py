@@ -2,9 +2,10 @@
 
 
 from pydantic import BaseModel
+from schemas.country import CountryResponse
 
 class ResultsCreate(BaseModel):
-    country_name: str
+    country_id: int
     points: int
     position: int
     year: int
@@ -12,10 +13,10 @@ class ResultsCreate(BaseModel):
 
 class ResultsResponse(BaseModel):
     id: int
-    country_name: str
     points: int
     position: int
     year: int
+    country: CountryResponse
 
     class Config:
         from_attributes = True

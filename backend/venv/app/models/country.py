@@ -1,6 +1,9 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from core.database import Base
+
+
+
 
 
 class Country(Base):
@@ -8,3 +11,8 @@ class Country(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     country_name= Column(String, nullable=False) 
+
+    results = relationship(
+    "Result",
+    back_populates="country"
+    )   

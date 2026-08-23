@@ -10,13 +10,6 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
 
-    points = relationship(
-        "Points",
-        back_populates="player"
-    )
+    points = relationship("Points", back_populates="player")
 
-    rooms = relationship(
-        "Room",
-        secondary=room_players,
-        back_populates="players"
-    )
+    rooms = relationship("Room", secondary=room_players, back_populates="players")

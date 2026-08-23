@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class RoomCreate(BaseModel):
-    name: str
+    year: int
 
 
 class JoinRoomCreate(BaseModel):
@@ -18,7 +18,7 @@ class PlayerResponse(BaseModel):
 
 class RoomResponse(BaseModel):
     id: int
-    name: str
+    year: int
     code: str
     players: list[PlayerResponse]
 
