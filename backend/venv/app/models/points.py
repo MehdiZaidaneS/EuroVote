@@ -7,7 +7,7 @@ class Points(Base):
     __tablename__ = "points"
 
     id = Column(Integer, primary_key=True, index=True)
-    country_name = Column(String, nullable=False)
+    country_id = Column(Integer, ForeignKey("country.id"), nullable=False)
     points = Column(Integer, nullable=False)
 
     player_id = Column(Integer, ForeignKey("users.id"), nullable=False)
@@ -15,3 +15,4 @@ class Points(Base):
 
     player = relationship("User", back_populates="points")
     room = relationship("Room", back_populates="points")
+    country = relationship("Country", back_populates="points")

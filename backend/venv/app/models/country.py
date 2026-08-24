@@ -15,4 +15,9 @@ class Country(Base):
     results = relationship(
     "Result",
     back_populates="country"
+    )
+
+    points = relationship(
+        "Points",
+        back_populates= "country"
     )   
