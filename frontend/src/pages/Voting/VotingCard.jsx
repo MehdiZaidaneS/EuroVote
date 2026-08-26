@@ -1,30 +1,58 @@
 import React, { useEffect, useState } from 'react'
 import "./VotingCard.css"
-import { getPointsFromCountry, givePointstoCountry } from '../../api/pointsApi';
+import { getPointsFromCountry, givePointstoCountry, updatePointstoCountry } from '../../api/pointsApi';
 import { useRoom } from '../../RoomContext';
 import { useUser } from '../../UserContext';
 
-function VotingCard({result, setSelectedCountry}) {
+function VotingCard({ result, setSelectedCountry, handleGetPointsByUser }) {
 
-    const [points, setPoints] = useState();
+
+    const [pointsGiven, setPointsGiven] = useState(false);
+    const [points, setPoints] = useState(0);
     const { room } = useRoom()
     const { user } = useUser()
 
     useEffect(() => {
-           
-        handleGetPoints()
-    
-        }, [])
-    
 
-    const handleGetPoints = async ()=>{
+        handleGetPoints()
+
+    }, [])
+
+
+    const handleGetPoints = async () => {
         try {
             const points = await getPointsFromCountry(room.id, user.id, result.country.id)
             setPoints(points)
-            
+            if (points == null) {
+                setPointsGiven(false);
+            } else {
+                setPointsGiven(true);
+            }
+
         } catch (error) {
-            console.log(points)
+            console.log(error)
         }
+    }
+
+    const handleGivePoints = async () => {
+        try {
+            if (pointsGiven == false) {
+                await givePointstoCountry(room.id, user.id, result.country.id, points)
+                handleGetPointsByUser()
+
+            } else {
+                await updatePointstoCountry(room.id, user.id, result.country.id, points)
+            }
+
+
+            
+            setSelectedCountry()
+
+
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 
 
@@ -39,7 +67,7 @@ function VotingCard({result, setSelectedCountry}) {
             <p>{result.country.country_name}</p>
             <p>Points: <em>{points}</em></p>
             <input type='number' value={points} onChange={(e) => setPoints(e.target.value)}></input>
-            <button onClick={()=> setSelectedCountry()}>Submit</button>
+            <button onClick={() => handleGivePoints()}>Submit</button>
         </div>
     )
 }

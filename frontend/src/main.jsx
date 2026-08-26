@@ -10,6 +10,7 @@ import { RoomProvider } from './RoomContext.jsx'
 import EnterUsername from './pages/EnterUsername/EnterUsername.jsx'
 import Voting from './pages/Voting/Voting.jsx'
 import { UserProvider } from './UserContext.jsx'
+import PreviewPoints from './pages/PreviewPoints/PreviewPoints.jsx'
 
 const root = document.getElementById('root')
 
@@ -28,6 +29,7 @@ createRoot(root).render(
             <Route path='/view-results' element={<ViewResults />} />
             <Route path="/enter-username" element={<EnterUsername />} />
             <Route path='/voting' element={<Voting />} />
+            <Route path="/preview" element={<PreviewPoints />} />
 
           </Routes>
         </UserProvider>

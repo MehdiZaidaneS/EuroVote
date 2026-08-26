@@ -21,18 +21,21 @@ export async function getPointsFromCountry(room_id, player_id, country_id){
 }
 
 
-export async function givePointstoCountry(room_id, player_id, country_id){
+export async function givePointstoCountry(room_id, player_id, country_id, points){
 
     const response = await fetch(`${API_URL}/${room_id}/${player_id}/${country_id}`,{
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+                points: Number(points)
+            })
     });
 
 
     if (!response.ok){
-        throw new Error("Failed to find flag")
+        throw new Error("Failed to give points")
     }
 
     const responseJson = await response.json()
@@ -40,21 +43,44 @@ export async function givePointstoCountry(room_id, player_id, country_id){
     return responseJson;
 }
 
-export async function updatePointstoCountry(room_id, player_id, country_id){
+export async function updatePointstoCountry(room_id, player_id, country_id, points){
 
     const response = await fetch(`${API_URL}/${room_id}/${player_id}/${country_id}`,{
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+                points: Number(points)
+            })
     });
 
 
     if (!response.ok){
-        throw new Error("Failed to find flag")
+        throw new Error("Failed to update points")
     }
 
     const responseJson = await response.json()
 
     return responseJson;
+}
+
+
+
+export async function getPointsGivenByUser(room_id, player_id){
+
+    const response = await fetch(`${API_URL}/${room_id}/${player_id}`,{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    if (!response.ok){
+        throw new Error("Failed getting users points")
+    }
+
+    const responseJson = await response.json()
+
+    return responseJson
 }

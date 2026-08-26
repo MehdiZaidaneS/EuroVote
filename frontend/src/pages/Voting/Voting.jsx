@@ -3,20 +3,27 @@ import { useRoom } from '../../RoomContext'
 import { useUser } from '../../UserContext'
 import "./Voting.css"
 import { getParticipatingCountries } from '../../api/roomApi'
+import { getPointsGivenByUser } from '../../api/pointsApi'
 import { getCountryFlag } from '../../api/restCountries'
 import VotingCard from './VotingCard'
+import { useNavigate } from 'react-router'
 
 function Voting() {
     const { room } = useRoom()
     const { user } = useUser()
 
+    const navigate = useNavigate();
+
     const [results, setResults] = useState(null)
 
+
+    const [pointsGiven, setPointsGiven] = useState([])
     const [selectedCountry, setSelectedCountry] = useState();
 
     useEffect(() => {
         if (room?.year) {
             handleGetCountries()
+            handleGetPointsByUser()
         }
 
     }, [room?.year])
@@ -44,6 +51,18 @@ function Voting() {
         }
     }
 
+    const handleGetPointsByUser = async () => {
+        try {
+
+            const points_obtained = await getPointsGivenByUser(room.id, user.id)
+
+            setPointsGiven(points_obtained);
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <div>
             <h2>Eurovision {room?.year}: <em>{room?.code}</em></h2>
@@ -51,23 +70,33 @@ function Voting() {
 
             {results && !selectedCountry && (
                 <div className='participating-countries'>
-                    {results.map((result) => (
-                        <div key={result.id} onClick={() => setSelectedCountry(result)}>
-                            <img
-                                src={result.flag}
-                                alt={`${result.country.country_name} flag`}
-                                width="50"
-                            />
+                    {results.map((result) => {
+                        const hasReceivedPoints = pointsGiven.some(
+                            (point) => point.country.id === result.country.id
+                        )
 
-                            <p>{result.country.country_name}</p>
-                        </div>
-                    ))}
+                        return (
+                            <div
+                                key={result.id}
+                                onClick={() => setSelectedCountry(result)}
+                                className={hasReceivedPoints ? "country-voted" : "country-not-voted"}
+                            >
+                                <img
+                                    src={result.flag}
+                                    alt={`${result.country.country_name} flag`}
+                                    width="50"
+                                />
+
+                                <p>{result.country.country_name}</p>
+                            </div>
+                        )
+                    })}
                 </div>
 
             )}
             {results && !selectedCountry && (
                 <div>
-                    <button>Submit</button>
+                    <button onClick={()=> navigate("/preview")}>Submit</button>
                 </div>
             )
 
@@ -75,7 +104,7 @@ function Voting() {
 
             {
                 selectedCountry && (
-                    <VotingCard result={selectedCountry} setSelectedCountry={setSelectedCountry} />
+                    <VotingCard result={selectedCountry} setSelectedCountry={setSelectedCountry} handleGetPointsByUser={handleGetPointsByUser}/>
                 )
             }
 

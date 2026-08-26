@@ -24,7 +24,7 @@ def create_points(points: PointsCreate, room_id: int, country_id:int, player_id:
 def update_points_country(points: PointsCreate, room_id: int, country_id:int, player_id: int, db: Session = Depends(get_db)):
     return update_points(db, country_id, points.points, player_id, room_id)
 
-@router.get("/{room_id}/{player_id}")
+@router.get("/{room_id}/{player_id}", response_model=list[PointsResponse])
 def get_all_points(room_id: int, player_id: int,db: Session = Depends(get_db)):
     return get_all_points_from_user(db, room_id,  player_id)
 
