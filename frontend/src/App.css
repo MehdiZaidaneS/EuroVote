@@ -2,18 +2,20 @@
 
 .app-container h1{
     font-size: 50px;
+    margin-bottom: 0px;
 }
 
+
+.app-container p{
+    margin-top: 0px;
+}
 
 .button-action{
     display: flex;
     flex-direction: column;
-    margin: 0 auto;
+    margin: auto;
     width: fit-content;
+    margin-top: 30px;
+    margin-bottom: 50px;
 }
 
-.button-action button{
-    padding: 10px;
-    margin-bottom: 5px;
-    font-size: 20px;
-}

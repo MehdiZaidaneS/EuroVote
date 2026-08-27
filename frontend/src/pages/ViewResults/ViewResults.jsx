@@ -6,6 +6,7 @@ import { getPointsGivenByUser } from '../../api/pointsApi'
 import { compareIndividualResult, compareRoomResult } from "../../api/results"
 import { useRoom } from '../../RoomContext'
 import { useUser } from '../../UserContext'
+import ResultRow from './ResultRow'
 
 function ViewResults() {
 
@@ -87,7 +88,8 @@ function ViewResults() {
 
   return (
     <div className='view-results-container'>
-      <h1>My Reuslts</h1>
+      <h1>Results</h1>
+      <h2>Room: {room.code}</h2>
 
       {/* <div className='my-result'>
         <h2>General score = {myResult.score}</h2>
@@ -99,14 +101,9 @@ function ViewResults() {
       <div className='room-results'>
         
         {
-          roomResults.map((result) => {
+          roomResults.sort((a,b)=> a.score -b.score).map((result) => {
             return (
-              <div key={result.user}>
-                <h2>General score = {result.score}</h2>
-                <h3>Perfect Guess = {result.perfect}</h3>
-                <h3>Furthest guess = {result.furthest?.dif} {result.furthest?.country}</h3>
-                <h3>Closest guess = {result.closest?.dif} {result.closest?.country}</h3>
-              </div>
+              <ResultRow index={roomResults.indexOf(result)} result={result}/>
             )
           })
 

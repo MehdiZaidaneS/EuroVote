@@ -1,31 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
 import './App.css'
 import { Link } from 'react-router'
 
 function App() {
-
-
   return (
-  
     <div className="app-container">
-      <h1>EuroVote</h1>
+      <h1>Eurovote</h1>
+
+      <p>
+        <em>Challenge to see who knows the most about Eurovision</em>
+      </p>
 
       <div className="button-action">
-        <Link to="/create-room">
-          <button>Create a room</button>
+        <Link className="action-button" to="/create-room">
+          Create Room
         </Link>
 
-        <Link to="/join-room">
-          <button>Join a room</button>
+        <Link className="action-button" to="/join-room">
+          Join Room
         </Link>
 
-        <Link to="/view-results">
-          <button>View Results</button>
+        <Link className="action-button" to="/view-results">
+          Check Results
         </Link>
       </div>
+
+
+      <footer>
+        <p>© 2026 Penta · EuroVote</p>
+      </footer>
+
     </div>
   )
 }
