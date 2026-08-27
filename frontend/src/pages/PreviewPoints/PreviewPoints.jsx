@@ -4,6 +4,7 @@ import { useUser } from '../../UserContext'
 import { getPointsGivenByUser } from '../../api/pointsApi'
 import "./PreviewPoints.css"
 import PreviewCard from './PreviewCard'
+import { useNavigate } from 'react-router'
 
 
 function PreviewPoints() {
@@ -34,6 +35,8 @@ function PreviewPoints() {
     }
   }
 
+  const navigate = useNavigate()
+
   return (
     <div>
       <h2>Eurovision {room?.year}: <em>{room?.code}</em></h2>
@@ -49,6 +52,7 @@ function PreviewPoints() {
 
         }
       </div>
+      <button onClick={() => navigate("/view-results")}>Move to another page</button>
     </div>
   )
 }
