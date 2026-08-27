@@ -3,16 +3,14 @@ import { useEffect, useState } from 'react'
 import './ViewResults.css'
 import { getParticipatingCountries } from '../../api/roomApi'
 import { getPointsGivenByUser } from '../../api/pointsApi'
+import { compareIndividualResult, compareRoomResult } from "../../api/results"
 import { useRoom } from '../../RoomContext'
 import { useUser } from '../../UserContext'
 
 function ViewResults() {
 
 
-  const [generalScore, setGeneralScore] = useState(0)
-  const [perfectGuess, setPerfectGuess] = useState(0)
-  const [furthestGuess, setFurthestGuess] = useState(null)
-  const [closestGuess, setClosestGuess] = useState(null)
+
 
 
   const { room } = useRoom()
@@ -21,21 +19,34 @@ function ViewResults() {
   const [results, setResults] = useState([])
   const [pointsGiven, setPointsGiven] = useState([])
 
+  const [myResult, setMyResult] = useState({
+    score: 0,
+    perfect: 0,
+    furthest: null,
+    closest: null
+  })
+  const [roomResults, setRoomResults] = useState([])
+
 
   useEffect(() => {
     if (room?.year) {
       handleGetCountries()
       handleGetPointsByUser()
     }
-  
+
 
   }, [room?.year])
 
   useEffect(() => {
-  if (results && pointsGiven.length > 0) {
-    compareResult()
-  }
-}, [results, pointsGiven])
+    if (
+      results.length > 0 &&
+      pointsGiven.length > 0 &&
+      user
+    ) {
+      setMyResult(compareIndividualResult(results, pointsGiven, user))
+      handleCompareRoomResult()
+    }
+  }, [results, pointsGiven, user])
 
 
   const handleGetCountries = async () => {
@@ -61,65 +72,48 @@ function ViewResults() {
   }
 
 
-  const compareResult = () => {
-    let score = 0
-    let perfect = 0
-    let furthest = null
-    let closest = null
+  const handleCompareRoomResult = async () => {
+    try {
+      const room_results = await compareRoomResult(room);
+      setRoomResults(room_results)
 
-    for (let i = 0; i < results.length; i++) {
-      const countryId = results[i].country.id
-      const realPosition = results[i].position
-
-      for (let k = 0; k < pointsGiven.length; k++) {
-        if (pointsGiven[k].country.id === countryId) {
-
-          const guessedPosition = k + 1
-          const dif = Math.abs(realPosition - guessedPosition)
-
-          score += dif
-
-          if (dif === 0) {
-            perfect++
-          }
-
-          if (furthest === null || dif > furthest.dif) {
-            furthest = {
-              dif: dif,
-              country: pointsGiven[k].country.country_name
-            }
-          }
-
-          if (closest === null || dif < closest.dif) {
-            closest = {
-              dif: dif,
-              country: pointsGiven[k].country.country_name
-            }
-          }
-
-          break
-        }
-      }
+    } catch (error) {
+      console.log(error)
     }
-
-    setGeneralScore(score)
-    setPerfectGuess(perfect)
-    setFurthestGuess(furthest)
-    setClosestGuess(closest)
   }
+
+
 
 
   return (
     <div className='view-results-container'>
       <h1>My Reuslts</h1>
-     
-        <div>
-          <h2>General score = {generalScore}</h2>
-          <h3>Perfect Guess = {perfectGuess}</h3>
-          <h3>Furthest guess = {furthestGuess?.dif} {furthestGuess?.country}</h3>
-          <h3>Closest guess = {closestGuess?.dif} {closestGuess?.country}</h3>
-        </div>
-      
+
+      {/* <div className='my-result'>
+        <h2>General score = {myResult.score}</h2>
+        <h3>Perfect Guess = {myResult.perfect}</h3>
+        <h3>Furthest guess = {myResult.furthest?.dif} {myResult.furthest?.country}</h3>
+        <h3>Closest guess = {myResult.closest?.dif} {myResult.closest?.country}</h3>
+      </div> */}
+
+      <div className='room-results'>
+        
+        {
+          roomResults.map((result) => {
+            return (
+              <div key={result.user}>
+                <h2>General score = {result.score}</h2>
+                <h3>Perfect Guess = {result.perfect}</h3>
+                <h3>Furthest guess = {result.furthest?.dif} {result.furthest?.country}</h3>
+                <h3>Closest guess = {result.closest?.dif} {result.closest?.country}</h3>
+              </div>
+            )
+          })
+
+        }
+
+      </div>
+
 
     </div>
   )
