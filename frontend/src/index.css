@@ -36,9 +36,21 @@ body {
   background-color: white;
   text-decoration: none;
   border-radius: 12px;
+  color: #4f23d5;
+  font-weight: bold ;
 }
 
 .action-button:hover {
   color: black;
   background-color: rgb(255, 223, 182);
+  cursor: pointer;
+}
+
+
+.logo{
+
+    font-size: 50px;
+    margin-bottom: 0px;
+    cursor: pointer;
+
 }

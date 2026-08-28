@@ -1,21 +1,60 @@
-.eurovision-selection{
+
+
+.eurovision-selection {
     display: flex;
     flex-direction: column;
 }
 
-.eurovision-selection button{
+.eurovision-selection button {
     width: fit-content;
     margin: 0 auto;
     justify-content: center;
     text-align: center;
     margin-top: 15px;
+    border: none;
 }
 
-.eurovision-selection select{
-    width: 50%;
-    margin: 0 auto;
-    justify-content: center;
+
+#eurovisions {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    width: 200px;
+    font-size: 24px;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: white;
+    margin-bottom: 15px;
+    overflow-y: auto;
+}
+
+
+
+#eurovisions option {
+    padding: 5px;
     font-size: 20px;
-    
+    font-family: 'Courier New', Courier, monospace  ;
 }
 
+#eurovisions option:checked {
+    background-color: rgba(0, 0, 255, 0.678);
+    color: white;
+}
+
+#eurovisions::-webkit-scrollbar {
+    width: 5px;
+}
+
+#eurovisions::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#eurovisions::-webkit-scrollbar-thumb {
+    background: #acacac;
+    border-radius: 10px;
+}
+
+#eurovisions::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

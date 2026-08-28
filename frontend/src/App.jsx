@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 function App() {
   return (
     <div className="app-container">
-      <h1>Eurovote</h1>
+      <h1 className='logo' onClick={() => navigate("/")}>Eurovote</h1>
 
       <p>
         <em>Challenge to see who knows the most about Eurovision</em>
