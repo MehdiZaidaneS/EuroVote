@@ -4,7 +4,7 @@ import { getPointsFromCountry, givePointstoCountry, updatePointstoCountry } from
 import { useRoom } from '../../RoomContext';
 import { useUser } from '../../UserContext';
 
-function VotingCard({ result, setSelectedCountry, handleGetPointsByUser }) {
+function VotingCard({ result, setSelectedCountry, loadVotingData }) {
 
 
     const [pointsGiven, setPointsGiven] = useState(false);
@@ -36,19 +36,14 @@ function VotingCard({ result, setSelectedCountry, handleGetPointsByUser }) {
 
     const handleGivePoints = async () => {
         try {
-            if (pointsGiven == false) {
+            if (!pointsGiven) {
                 await givePointstoCountry(room.id, user.id, result.country.id, points)
-                handleGetPointsByUser()
-
             } else {
                 await updatePointstoCountry(room.id, user.id, result.country.id, points)
             }
 
-
-            
-            setSelectedCountry()
-
-
+            await loadVotingData()
+            setSelectedCountry(null)
         } catch (error) {
             console.log(error)
         }
@@ -66,7 +61,7 @@ function VotingCard({ result, setSelectedCountry, handleGetPointsByUser }) {
 
             <p>{result.country.country_name}</p>
             <p>Points: <em>{points}</em></p>
-            <input type='number' value={points} onChange={(e) => setPoints(e.target.value)}></input>
+            <input type='number' value={points} onChange={(e) => setPoints((e.target.value))}></input>
             <button onClick={() => handleGivePoints()}>Submit</button>
         </div>
     )

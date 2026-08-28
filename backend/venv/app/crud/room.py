@@ -7,11 +7,19 @@ from models.user import User
 
 
 def create_room(db: Session, year: int):
-    code = ''.join(random.choices(string.ascii_uppercase, k=10))
-    new_room = Room(year=year, code= code)
+    while True:
+        code = ''.join(random.choices(string.ascii_uppercase, k=10))
+
+        existing_room = db.query(Room).filter(Room.code == code).first()
+
+        if not existing_room:
+            break
+
+    new_room = Room(year=year, code=code)
     db.add(new_room)
     db.commit()
     db.refresh(new_room)
+
     return new_room
 
 

@@ -1,9 +1,18 @@
-.username-selection{
+.username-selection form{
     display: flex;
     flex-direction: column;
 }
 
+.username-selection form input{
+    font-size: 20px;
+    
+}
+
 .username-selection button{
-    margin-top: 10px;
-    margin-bottom: 20px;
+    text-align: center;
+    justify-content: center;
+    margin: 0 auto;
+    margin-top: 30px;
+    width: fit-content;
+    border: none;
 }

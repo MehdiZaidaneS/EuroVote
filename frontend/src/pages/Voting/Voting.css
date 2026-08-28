@@ -2,7 +2,41 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 10px;
-    margin-bottom: 20px;    
+    margin-bottom: 20px;
+
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.participating-countries::-webkit-scrollbar {
+    width: 5px;
+}
+
+.participating-countries::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.participating-countries::-webkit-scrollbar-thumb {
+    background: #acacac;
+    border-radius: 10px;
+}
+
+.participating-countries::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Tablets / smaller screens */
+@media (max-width: 900px) {
+    .participating-countries {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Phones */
+@media (max-width: 600px) {
+    .participating-countries {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .country-voted {
