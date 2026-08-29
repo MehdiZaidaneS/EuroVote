@@ -18,7 +18,7 @@ def get_db():
 
 @router.post("/", response_model=CountryResponse)
 def add_country(country: CountryCreate, db: Session = Depends(get_db)):
-    return create_country(db, country.country_name)
+    return create_country(db, country.country_name, country.wins, country.last_participation_year, country.last_participation_pos)
 
 
 @router.get("/", response_model=list[CountryResponse])
