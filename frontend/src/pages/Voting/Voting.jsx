@@ -71,7 +71,7 @@ function Voting() {
             {results && !selectedCountry && (
                 <>
                     <div className='participating-countries'>
-                        {results.map((result) => {
+                        {results.sort((a,b)=> a.country.country_name.localeCompare(b.country.country_name) ).map((result) => {
                             const hasReceivedPoints = pointsGiven.some(
                                 (point) => point.country.id === result.country.id
                             )
@@ -88,7 +88,7 @@ function Voting() {
                                         width="50" height="30"
                                     />
 
-                                    <p>{result.country.country_name}</p>
+                                    <p className='country-name'>{result.country.country_name}</p>
                                 </div>
                             )
                         })}
