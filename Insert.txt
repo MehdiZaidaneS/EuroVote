@@ -1,0 +1,180 @@
+INSERT INTO results (country_id, points, position, year)
+VALUES
+    (10, 516, 1, 2026),   -- Bulgaria
+    (24, 343, 2, 2026),   -- Israel
+    (39, 296, 3, 2026),   -- Romania
+    (4, 287, 4, 2026),    -- Australia
+    (25, 281, 5, 2026),   -- Italy
+    (16, 279, 6, 2026),   -- Finland
+    (14, 243, 7, 2026),   -- Denmark
+    (30, 226, 8, 2026),   -- Moldova
+    (50, 221, 9, 2026),   -- Ukraine
+    (20, 220, 10, 2026),  -- Greece
+    (17, 158, 11, 2026),  -- France
+    (37, 150, 12, 2026),  -- Poland
+    (1, 145, 13, 2026),   -- Albania
+    (36, 134, 14, 2026),  -- Norway
+    (11, 124, 15, 2026),  -- Croatia
+    (13, 113, 16, 2026),  -- Czech Republic
+    (42, 90, 17, 2026),   -- Serbia
+    (29, 89, 18, 2026),   -- Malta
+    (12, 75, 19, 2026),   -- Cyprus
+    (47, 51, 20, 2026),   -- Sweden
+    (8, 36, 21, 2026),    -- Belgium
+    (27, 22, 22, 2026),   -- Lithuania
+    (19, 12, 23, 2026),   -- Germany
+    (5, 6, 24, 2026),     -- Austria
+    (51, 1, 25, 2026);    -- United Kingdom
+
+
+INSERT INTO results (country_id, points, position, year)
+VALUES
+    (25, 357, 2, 2025),   -- Israel
+    (26, 256, 5, 2025),   -- Italy
+    (17, 196, 11, 2025),   -- Finland
+    (15, 47, 23, 2025),   -- Denmark
+    (51, 218, 9, 2025),   -- Ukraine
+    (21, 231, 6, 2025),  -- Greece
+    (18, 230, 7, 2025),  -- France
+    (38, 156, 14, 2025),   -- Poland
+    (2, 218, 8, 2025),   -- Albania
+    (37, 89, 18, 2025),  -- Norway
+    (30, 91, 17, 2025),   -- Malta
+    (48, 321, 4, 2025),   -- Sweden
+    (28, 96, 16, 2025),   -- Lithuania
+    (47, 37, 24, 2025),   -- Spain
+    (23, 33, 25, 2025),   -- Iceland
+    (42, 27, 26, 2025),   -- San Marino
+    (4, 72, 20, 2025),   -- Armenia
+    (1, 50, 21, 2025),   -- Portugal
+    (29, 47, 22, 2025),   -- Luxemburgo
+    (20, 151, 15, 2025),   -- Germany
+    (6, 436, 1, 2025),     -- Austria
+    (16, 356, 3, 2025),     -- Estonia
+    (49, 214, 10, 2025),   -- Switzerland
+    (35, 175, 12, 2025),   -- Netherlands
+    (27, 158, 13, 2025),   -- Latvia
+    (52, 88, 19, 2025);    -- United Kingdom
+
+
+
+INSERT INTO results (country_id, points, position, year)
+VALUES
+    (49, 591, 1, 2024),    -- Switzerland
+    (12, 547, 2, 2024),    -- Croatia
+    (51, 453, 3, 2024),    -- Ukraine
+    (18, 445, 4, 2024),    -- France
+    (25, 375, 5, 2024),    -- Israel
+    (24, 278, 6, 2024),    -- Ireland
+    (26, 268, 7, 2024),    -- Italy
+    (4, 183, 8, 2024),     -- Armenia
+    (48, 174, 9, 2024),    -- Sweden
+    (1, 152, 10, 2024),    -- Portugal
+    (21, 126, 11, 2024),    -- Greece
+    (20, 117, 12, 2024),    -- Germany
+    (29, 103, 13, 2024),    -- Luxembourg
+    (28, 90, 14, 2024),     -- Lithuania
+    (13, 78, 15, 2024),     -- Cyprus
+    (27, 64, 16, 2024),     -- Latvia
+    (43, 54, 17, 2024),     -- Serbia
+    (52, 46, 18, 2024),     -- United Kingdom
+    (17, 38, 19, 2024),     -- Finland
+    (19, 34, 21, 2024),     -- Georgia
+    (46, 27, 23, 2024),     -- Slovenia
+    (47, 30, 22, 2024),     -- Spain
+    (37, 16, 25, 2024),     -- Norway
+    (6, 24, 24, 2024),      -- Austria
+    (16, 37, 20, 2024);      -- Estonia
+
+
+INSERT INTO results (country_id, points, position, year)
+VALUES
+    (48, 583, 1, 2023),
+    (17, 526, 2, 2023),
+    (25, 362, 3, 2023),
+    (26, 350, 4, 2023),
+    (37, 268, 5, 2023),
+    (51, 243, 6, 2023),
+    (9, 182, 7, 2023),
+    (16, 168, 8, 2023),
+    (5, 151, 9, 2023),
+    (14, 129, 10, 2023),
+    (28, 127, 11, 2023),
+    (13, 126, 12, 2023),
+    (12, 123, 13, 2023),
+    (4, 122, 14, 2023),
+    (6, 120, 15, 2023),
+    (18, 104, 16, 2023),
+    (47, 100, 17, 2023),
+    (31, 96, 18, 2023),
+    (38, 93, 19, 2023),
+    (49, 92, 20, 2023),
+    (46, 78, 21, 2023),
+    (2, 76, 22, 2023),
+    (1, 59, 23, 2023),
+    (43, 30, 24, 2023),
+    (52, 24, 25, 2023),
+    (20, 18, 26, 2023);
+
+
+
+INSERT INTO country (
+    id,
+    country_name,
+    wins,
+    last_participation_year,
+    last_participation_pos
+)
+VALUES
+    (1, 'Albania', 0, 2026, 13),
+    (2, 'Andorra', 0, 2009, 0),
+    (3, 'Armenia', 0, 2026, 0),
+    (4, 'Australia', 0, 2026, 4),
+    (5, 'Austria', 3, 2026, 24),
+    (6, 'Azerbaijan', 1, 2026, 0),
+    (7, 'Belarus', 0, 2019, 24),
+    (8, 'Belgium', 1, 2026, 21),
+    (9, 'Bosnia and Herzegovina', 0, 2016, 0),
+    (10, 'Bulgaria', 1, 2026, 1),
+    (11, 'Croatia', 0, 2026, 15),
+    (12, 'Cyprus', 0, 2026, 19),
+    (13, 'Czech Republic', 0, 2026, 16),
+    (14, 'Denmark', 3, 2026, 7),
+    (15, 'Estonia', 1, 2026, 0),
+    (16, 'Finland', 1, 2026, 6),
+    (17, 'France', 5, 2026, 11),
+    (18, 'Georgia', 0, 2026, 0),
+    (19, 'Germany', 2, 2026, 23),
+    (20, 'Greece', 1, 2026, 10),
+    (21, 'Hungary', 0, 2019, 0),
+    (22, 'Iceland', 0, 2025, 25),
+    (23, 'Ireland', 7, 2025, 0),
+    (24, 'Israel', 4, 2026, 2),
+    (25, 'Italy', 3, 2026, 5),
+    (26, 'Latvia', 1, 2026, 0),
+    (27, 'Lithuania', 0, 2026, 22),
+    (28, 'Luxembourg', 5, 2026, 0),
+    (29, 'Malta', 0, 2026, 18),
+    (30, 'Moldova', 0, 2026, 8),
+    (31, 'Monaco', 1, 2006, 0),
+    (32, 'Montenegro', 0, 2026, 0),
+    (33, 'Morocco', 0, 1980, 18),
+    (34, 'Netherlands', 5, 2025, 12),
+    (35, 'North Macedonia', 0, 2022, 0),
+    (36, 'Norway', 3, 2026, 14),
+    (37, 'Poland', 0, 2026, 12),
+    (38, 'Portugal', 1, 2026, 0),
+    (39, 'Romania', 0, 2026, 3),
+    (40, 'Russia', 1, 2021, 9),
+    (41, 'San Marino', 0, 2026, 0),
+    (42, 'Serbia', 1, 2026, 17),
+    (43, 'Serbia and Montenegro', 0, 2005, 7),
+    (44, 'Slovakia', 0, 2012, 0),
+    (45, 'Slovenia', 0, 2025, 0),
+    (46, 'Spain', 2, 2025, 24),
+    (47, 'Sweden', 7, 2026, 20),
+    (48, 'Switzerland', 3, 2026, 0),
+    (49, 'Turkey', 1, 2012, 7),
+    (50, 'Ukraine', 3, 2026, 9),
+    (51, 'United Kingdom', 5, 2026, 0),
+    (52, 'Yugoslavia', 1, 1992, 13);
