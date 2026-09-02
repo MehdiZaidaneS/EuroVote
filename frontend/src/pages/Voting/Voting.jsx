@@ -12,7 +12,16 @@ function Voting() {
     const { room, setRoom } = useRoom()
     const { user, setUser } = useUser()
 
-    const navigate = useNavigate();
+      const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!room && !user) {
+            navigate("/")
+        } 
+
+    }, [room, user, navigate])
+
+  
 
     const [results, setResults] = useState(null)
 
@@ -54,11 +63,11 @@ function Voting() {
 
     return (
         <div>
-            <h4 className='code'> Code: <em>{room.code}</em></h4>
+            <h4 className='code'> Code: <em>{room?.code}</em></h4>
             <h4 className='username'>Welcome, {user?.name}</h4>
 
             {
-                results && <h3>
+                results && !selectedCountry && <h3>
                     {pointsGiven.length === results.length
                         ? "You are ready to submit your votes!"
                         : `You have voted for ${pointsGiven.length}/${results.length} countries`
@@ -71,7 +80,7 @@ function Voting() {
             {results && !selectedCountry && (
                 <>
                     <div className='participating-countries'>
-                        {results.sort((a,b)=> a.country.country_name.localeCompare(b.country.country_name) ).map((result) => {
+                        {results.sort((a, b) => a.country.country_name.localeCompare(b.country.country_name)).map((result) => {
                             const hasReceivedPoints = pointsGiven.some(
                                 (point) => point.country.id === result.country.id
                             )
@@ -100,7 +109,7 @@ function Voting() {
                             <button className='action-button' onClick={() => navigate("/preview")}>Continue</button>
                         </div>
                     }
-                    
+
                 </>
 
             )}

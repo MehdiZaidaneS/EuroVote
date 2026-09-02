@@ -27,7 +27,11 @@ def create_result_route(result: ResultsCreate,db: Session = Depends(get_db)):
         result.country_id,
         result.points,
         result.position,
-        result.year
+        result.year,
+        result.artist,
+        result.song,
+        result.info,
+        result.img
     )
 
 

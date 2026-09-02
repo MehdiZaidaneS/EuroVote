@@ -4,8 +4,8 @@ from models.result import Result
 
 
 
-def create_result(db: Session, country_id: int, points: int, position: int, year:int ):
-    result = Result(country_id = country_id, points= points, position= position, year= year)
+def create_result(db: Session, country_id: int, points: int, position: int, year:int, artist:str, song: str, info: str, img: str ):
+    result = Result(country_id = country_id, points= points, position= position, year= year, artist= artist, song=song, info=info, img=img)
     db.add(result)
     db.commit()
     db.refresh(result)

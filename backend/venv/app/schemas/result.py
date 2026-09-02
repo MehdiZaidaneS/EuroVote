@@ -9,6 +9,11 @@ class ResultsCreate(BaseModel):
     points: int
     position: int
     year: int
+    artist: str
+    song: str
+    info: str
+    img: str
+    
 
 
 class ResultsResponse(BaseModel):
@@ -16,6 +21,10 @@ class ResultsResponse(BaseModel):
     points: int
     position: int
     year: int
+    artist: str
+    song: str
+    info: str
+    img: str
     country: CountryResponse
 
     class Config:
