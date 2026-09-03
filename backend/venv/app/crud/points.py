@@ -61,6 +61,21 @@ def update_points(db: Session,
     return existing_points
 
 
+def give_position(db: Session, id: int, position: int):
+
+    existing_points = db.query(Points).filter(Points.id == id).first()
+
+    if existing_points is None:
+        return None
+
+    existing_points.position = position
+
+    db.commit()
+    db.refresh(existing_points)
+
+    return existing_points
+
+
 
 
 

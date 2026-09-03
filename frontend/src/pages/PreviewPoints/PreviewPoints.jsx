@@ -53,6 +53,8 @@ function PreviewPoints() {
     <div className='preview-points'>
       <h4 className='code'> Code: <em>{room?.code}</em></h4>
       <h4 className='username'>Welcome, {user?.name}</h4>
+
+
       <div className='all-country-points'>
         {
 
