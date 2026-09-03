@@ -9,6 +9,7 @@ class Points(Base):
     id = Column(Integer, primary_key=True, index=True)
     country_id = Column(Integer, ForeignKey("country.id"), nullable=False)
     points = Column(Integer, nullable=False)
+    position = Column(Integer, nullable=True)
 
     player_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     room_id = Column(Integer, ForeignKey("rooms.id"), nullable=False)

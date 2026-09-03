@@ -61,6 +61,9 @@ def update_points(db: Session,
     return existing_points
 
 
+
+
+
 def get_point_from_country(db:Session, room_id:int, player_id:int, country_id:int):
     return db.query(Points).filter(Points.room_id == room_id).filter(Points.player_id == player_id).filter(Points.country_id== country_id).first()
 
