@@ -84,3 +84,24 @@ export async function getPointsGivenByUser(room_id, player_id){
 
     return responseJson
 }
+
+
+export async function updatePointsPosition(point_id, position){
+    const response = await fetch(`${API_URL}/position/${point_id}`,{
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+                position: Number(position)
+            })
+    });
+
+    if (!response.ok){
+        throw new Error("Failed to update position")
+    }
+
+    const responseJson = await response.json()
+
+    return responseJson;
+}

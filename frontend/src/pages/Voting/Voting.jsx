@@ -3,7 +3,7 @@ import { useRoom } from '../../RoomContext'
 import { useUser } from '../../UserContext'
 import "./Voting.css"
 import { getParticipatingCountries } from '../../api/roomApi'
-import { getPointsGivenByUser } from '../../api/pointsApi'
+import { getPointsGivenByUser, updatePointsPosition } from '../../api/pointsApi'
 import { getCountryFlag } from '../../api/restCountries'
 import VotingCard from './VotingCard'
 import { useNavigate } from 'react-router'
@@ -12,16 +12,16 @@ function Voting() {
     const { room, setRoom } = useRoom()
     const { user, setUser } = useUser()
 
-      const navigate = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!room && !user) {
             navigate("/")
-        } 
+        }
 
     }, [room, user, navigate])
 
-  
+
 
     const [results, setResults] = useState(null)
 
@@ -60,6 +60,38 @@ function Voting() {
             console.error(error)
         }
     }
+
+
+
+    const givePosition = async () => {
+        try {
+            const sortedPoints = [...pointsGiven]
+                .sort((a, b) => b.points - a.points)
+
+            await Promise.all(
+                sortedPoints.map((point, index) => {
+                    if (point.position === null) {
+                        updatePointsPosition(point.id, index + 1)
+
+                    }
+
+                }
+
+                )
+            )
+
+        } catch (error) {
+            console.error(error)
+        }
+
+        navigate("/preview")
+
+    }
+
+
+
+
+
 
     return (
         <div>
@@ -106,7 +138,7 @@ function Voting() {
                     {
                         pointsGiven.length === results.length &&
                         <div>
-                            <button className='action-button' onClick={() => navigate("/preview")}>Continue</button>
+                            <button className='action-button' onClick={() => givePosition()}>Continue</button>
                         </div>
                     }
 

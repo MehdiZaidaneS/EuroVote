@@ -12,6 +12,16 @@
     box-shadow: 0px 0px 2px 0px;
     align-items: center;
 
+    cursor: pointer;
+    user-select: none;  
+
+
+}
+
+.country-points:active{
+    cursor: grabbing;
+    opacity: 0.5;
+    
 }
 
 .country-points p{
