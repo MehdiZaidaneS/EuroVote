@@ -58,6 +58,8 @@ function PreviewPoints() {
 
       resultsWithFlags.sort((a, b) => a.position - b.position)
 
+      console.log(resultsWithFlags)
+
       setPointsGiven(resultsWithFlags);
 
       return points_obtained
@@ -74,11 +76,6 @@ function PreviewPoints() {
   const handleDragOver = (event) => {
     event.preventDefault();
   }
-
-
-
-
-
 
   const handleDrop = async (dropIndex) => {
     if (draggedIndex === null || draggedIndex === dropIndex) {
@@ -140,9 +137,9 @@ function PreviewPoints() {
         })}
       </div>
 
-      <button className='action-button submit' onClick={() => navigate("/view-results")}>Submit</button>
+      <button className='action-button submit' onClick={() => navigate("/result")}>Submit</button>
 
-      <p className='back-button' onClick={() => navigate("/voting")}><em>Back to country selections...</em></p>
+      {/* <p className='back-button' onClick={() => navigate("/voting")}><em>Back to country selections...</em></p> */}
 
       <button className="leave-button" onClick={() => { navigate("/"); setRoom(null); setUser(null) }}> Leave Room</button>
     </div>

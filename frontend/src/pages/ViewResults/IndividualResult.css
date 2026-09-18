@@ -1,0 +1,84 @@
+.individual-result{
+    max-height: 75vh;
+    overflow-y: auto;  
+    padding: 10px;
+    padding-bottom: 10px; 
+}
+
+
+.individual-result::-webkit-scrollbar {
+    width: 5px;
+}
+
+.individual-result::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.individual-result::-webkit-scrollbar-thumb {
+    background: #acacac;
+    border-radius: 10px;
+}
+
+.individual-result::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+.score-section {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.score-label {
+    font-size: 14px;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+}
+
+.score-circle {
+    
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+
+}
+
+.score-circle span {
+    font-size: 50px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.score-circle small {
+    font-size: 18px;
+    opacity: 0.5;
+    margin-top: 5px;
+}
+
+
+
+/* CARDS */
+
+.result-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 18px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 650px) {
+    .result-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+
+    .score-circle span {
+        font-size: 55px;
+    }
+}

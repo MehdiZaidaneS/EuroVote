@@ -68,6 +68,8 @@ function Voting() {
             const sortedPoints = [...pointsGiven]
                 .sort((a, b) => b.points - a.points)
 
+            console.log(sortedPoints)    
+
             await Promise.all(
                 sortedPoints.map((point, index) => {
                     if (point.position === null) {

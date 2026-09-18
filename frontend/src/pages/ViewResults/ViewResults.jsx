@@ -10,10 +10,6 @@ import ResultRow from './ResultRow'
 
 function ViewResults() {
 
-
-
-
-
   const { room } = useRoom()
   const { user } = useUser()
 

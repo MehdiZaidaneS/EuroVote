@@ -11,6 +11,7 @@ import EnterUsername from './pages/EnterUsername/EnterUsername.jsx'
 import Voting from './pages/Voting/Voting.jsx'
 import { UserProvider } from './UserContext.jsx'
 import PreviewPoints from './pages/PreviewPoints/PreviewPoints.jsx'
+import IndividualResult from './pages/ViewResults/IndividualResult.jsx'
 
 const root = document.getElementById('root')
 
@@ -30,6 +31,7 @@ createRoot(root).render(
             <Route path="/enter-username" element={<EnterUsername />} />
             <Route path='/voting' element={<Voting />} />
             <Route path="/preview" element={<PreviewPoints />} />
+            <Route path='/result' element={<IndividualResult />} />
 
           </Routes>
         </UserProvider>
