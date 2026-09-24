@@ -140,7 +140,6 @@ export function compareIndividualResult(results, pointsGiven, user) {
         bot5Message: bot5Message,
         guessedWinner: guessedWinner,
         guessedLooser: guessedLooser,
-
         guessedTop5: guessedTop5,
         guessedBottom5: guessedBottom5
     }
@@ -166,7 +165,7 @@ export const compareRoomResult = async (room) => {
             )
 
             const sortedPoints = pointsGiven.sort(
-                (a, b) => b.points - a.points
+                (a, b) => a.position - b.position
             )
 
             const result = compareIndividualResult(
