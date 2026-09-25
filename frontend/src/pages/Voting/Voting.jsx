@@ -42,11 +42,11 @@ function Voting() {
 
             const resultsWithFlags = await Promise.all(
                 countries.map(async (result) => {
-                    const flag = await getCountryFlag(result.country.country_name)
+                    //const flag = await getCountryFlag(result.country.country_name)
 
                     return {
                         ...result,
-                        flag
+                        //flag
                     }
                 })
             )

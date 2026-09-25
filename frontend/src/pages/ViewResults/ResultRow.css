@@ -1,4 +1,15 @@
 .result-row{
     display: flex;
     justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.778);
+    color: black;
+    margin: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 12px;
+}
+
+.result-row p {
+    margin: 0px;
+    font-size: 20px;
 }

@@ -91,7 +91,7 @@ export function compareIndividualResult(results, pointsGiven, user) {
         100 - (score / maxScore) * 100
     )
 
-    console.log(numberOfCountries)
+    
 
     let perfectMessage = ""
 
@@ -148,8 +148,28 @@ export function compareIndividualResult(results, pointsGiven, user) {
 
 export const compareRoomResult = async (room) => {
 
-    const roomResults = []
+    const individualResults = []
+    
+    let perfect = {
+        user: "None",
+        amount: 0
+    }
+    let furthest = {
+        user: "None",
+        country: "None",
+        distance: 0
+    }
+    let guessedWinner = []
+    let guessedLooser = []
 
+    let guessedTop5 = {
+        user: "None",
+        guessedAmount: 0
+    }
+    let guessedBottom5 = {
+        user: "None",
+        guessedAmount: 0
+    }
 
 
     try {
@@ -174,11 +194,50 @@ export const compareRoomResult = async (room) => {
                 player
             )
 
-            roomResults.push(result)
+            if(result.perfect > perfect.amount){
+                perfect.user = result.user
+                perfect.amount = result.perfect
+            }
+
+            if(result.furthest?.dif > furthest.distance){
+                furthest.user = result.user
+                furthest.distance = result.furthest.dif
+                furthest.country = result.furthest.country
+            }
+
+            if(result.guessedWinner){
+                guessedWinner.push(result.user)
+            }
+
+            if(result.guessedLooser){
+                guessedLooser.push(result.user)
+            }
+
+            if(result.guessedBottom5 > guessedBottom5.guessedAmount){
+                guessedBottom5.user = result.user
+                guessedBottom5.guessedAmount = result.guessedBottom5
+            }
+
+            if(result.guessedTop5 > guessedTop5.guessedAmount){
+                guessedTop5.user = result.user
+                guessedTop5.guessedAmount = result.guessedTop5
+            }
+
+            individualResults.push(result)
         }
 
     } catch (error) {
         console.error(error)
+    }
+
+    const roomResults = {
+        individualResults,
+        perfect,
+        furthest,
+        guessedWinner,
+        guessedBottom5,
+        guessedLooser,
+        guessedTop5
     }
 
 
