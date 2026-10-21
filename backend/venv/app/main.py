@@ -14,7 +14,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "https://euro-vote.vercel.app/",
+        "https://euro-vote.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
