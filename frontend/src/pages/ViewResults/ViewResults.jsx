@@ -8,6 +8,7 @@ import { useRoom } from '../../RoomContext'
 import { useUser } from '../../UserContext'
 import ResultRow from './ResultRow'
 import { useNavigate } from 'react-router'
+import IndividualResultCard from './IndividualResultCard'
 
 function ViewResults() {
 
@@ -17,13 +18,26 @@ function ViewResults() {
   const navigate = useNavigate()
   const [roomResults, setRoomResults] = useState({
     individualResults: [],
-    perfect: {},
-    furthest: {},
+    perfect: {
+      user: "None",
+      amount: 0
+    },
+    furthest: {
+      user: "None",
+      country: "None",
+      distance: 0
+    },
     guessedWinner: [],
-    guessedBottom5: {},
+    guessedBottom5: {
+      user: [],
+      guessedAmount: 0
+    },
     guessedLooser: [],
-    guessedTop5: {}
-
+    guessedTop5: {
+      user: [],
+      guessedAmount: 0
+    },
+    playersDone: 0
   })
 
   useEffect(() => {
@@ -86,38 +100,86 @@ function ViewResults() {
         room &&
         <div className='results-container'>
           <h4 className='code'> Code: <em>{room?.code}</em></h4>
-          <h1 className='logo' onClick={() => navigate("/")}>Eurovote</h1>
+          <h1 className='logo'>Results</h1>
           {
-            roomResults.individualResults
-              .sort((a, b) => b.score - a.score)
-              .map((result, index) => {
-                return (
-                  <ResultRow
-                    key={result.user}
-                    index={index}
-                    result={result}
-                  />
-                )
-              })
+            roomResults.playersDone == 0 &&
+            <p>Votes not available, submit your votes first...</p>
           }
 
+          <div className='results'>
+            <div className='scoreboard'>
+              {
+                roomResults.individualResults
+                  .sort((a, b) => b.score - a.score)
+                  .map((result, index) => {
+                    return (
+                      <ResultRow
+                        key={result.user}
+                        index={index}
+                        result={result}
+                      />
+                    )
+                  })
+              }
+            </div>
 
-          <div>
-            <p>{roomResults.perfect.user} guessed: {roomResults.perfect.amount} countries correct</p>
-            <p>{roomResults.furthest.user} thought {roomResults.furthest.country} was {roomResults.furthest.distance} away</p>
-            <p>{roomResults.guessedBottom5.user} guessed {roomResults.guessedBottom5.guessedAmount}/5 from BOTTOM 5</p>
-            <p>{roomResults.guessedTop5.user} guessed {roomResults.guessedTop5.guessedAmount}/5 from TOP 5</p>
-            {
-              roomResults.guessedWinner.map((winner) => (
-                <p key={winner}>{winner} guessed the winner!</p>
-              ))
-            }
-            {
-              roomResults.guessedLooser.map((looser) => (
-                <p key={looser}>{looser} guessed the looser!</p>
-              ))
-            }
 
+
+            <div className='other-results'>
+              {
+                roomResults.perfect.user != "None" &&
+                <IndividualResultCard
+                  icon="⭐"
+                  upper={`${roomResults.perfect.user}, guessed the most`}
+                  lower={`  ${roomResults.perfect.amount} countries correct!`}
+                />
+              }
+              {
+                roomResults.furthest.user != "None" &&
+                <IndividualResultCard
+                  icon="💩"
+                  upper={`${roomResults.furthest.user}, had the worst guess`}
+                  lower={`${roomResults.furthest.country} was ${roomResults.furthest.distance} positions away`}
+                />
+              }
+
+              {
+                roomResults.guessedTop5.user.length > 0 &&
+                <IndividualResultCard
+                  icon="🔝"
+                  upper={`${roomResults.guessedTop5.user.join(" & ")}, guessed the best`}
+                  lower={`${roomResults.guessedTop5.guessedAmount}/5 from TOP 5`}
+                />
+              }
+
+              {
+                roomResults.guessedBottom5.user.length > 0 &&
+                <IndividualResultCard
+                  icon="💯"
+                  upper={`${roomResults.guessedBottom5.user.join(" & ")}, guessed the best`}
+                  lower={`${roomResults.guessedBottom5.guessedAmount}/5 from BOTTOM 5`}
+                />
+              }
+
+              {
+                roomResults.guessedWinner.length > 0 &&
+                <IndividualResultCard
+                  icon="🥇"
+                  upper={roomResults.guessedWinner.join(" & ")}
+                  lower={`guessed the winner!`}
+                />
+
+              }
+              {
+                roomResults.guessedLooser.length > 0 &&
+                <IndividualResultCard
+                  icon="😵‍💫"
+                  upper={roomResults.guessedLooser.join(" & ")}
+                  lower={`guessed the looser!`}
+                />
+              }
+
+            </div>
           </div>
           <button className="leave-button" onClick={() => { navigate("/"); setRoom(null); }}> Leave Results</button>
 

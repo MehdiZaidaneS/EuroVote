@@ -60,7 +60,7 @@ export function compareIndividualResult(results, pointsGiven, user) {
                 }
 
 
-                
+
 
                 // Correct Top 5 position
                 if (
@@ -72,7 +72,7 @@ export function compareIndividualResult(results, pointsGiven, user) {
 
                 // Correct Bottom 5 position
                 if (
-                    guessedPosition > results.length - 5  &&
+                    guessedPosition > results.length - 5 &&
                     realPosition > results.length - 5
                 ) {
                     guessedBottom5++
@@ -91,14 +91,14 @@ export function compareIndividualResult(results, pointsGiven, user) {
         100 - (score / maxScore) * 100
     )
 
-    
+
 
     let perfectMessage = ""
 
     if (perfect === 0) {
         perfectMessage = "Grandma's vision"
     } else if (perfect < 5) {
-        perfectMessage = "Not luck at all"
+        perfectMessage = "Not lucky at all"
     } else if (perfect < 10) {
         perfectMessage = "Eagle eye"
     } else {
@@ -149,7 +149,7 @@ export function compareIndividualResult(results, pointsGiven, user) {
 export const compareRoomResult = async (room) => {
 
     const individualResults = []
-    
+
     let perfect = {
         user: "None",
         amount: 0
@@ -163,13 +163,15 @@ export const compareRoomResult = async (room) => {
     let guessedLooser = []
 
     let guessedTop5 = {
-        user: "None",
+        user: [],
         guessedAmount: 0
     }
     let guessedBottom5 = {
-        user: "None",
+        user: [],
         guessedAmount: 0
     }
+
+    let playersDone = 0
 
 
     try {
@@ -184,46 +186,61 @@ export const compareRoomResult = async (room) => {
                 player.id
             )
 
-            const sortedPoints = pointsGiven.sort(
-                (a, b) => a.position - b.position
-            )
+            if (pointsGiven.length === results.length) {
+                const sortedPoints = pointsGiven.sort(
+                    (a, b) => a.position - b.position
+                )
 
-            const result = compareIndividualResult(
-                results,
-                sortedPoints,
-                player
-            )
+                playersDone += 1;
 
-            if(result.perfect > perfect.amount){
-                perfect.user = result.user
-                perfect.amount = result.perfect
+                const result = compareIndividualResult(
+                    results,
+                    sortedPoints,
+                    player
+                )
+
+                if (result.perfect > perfect.amount) {
+                    perfect.user = result.user
+                    perfect.amount = result.perfect
+                }
+
+                if (result.furthest?.dif > furthest.distance) {
+                    furthest.user = result.user
+                    furthest.distance = result.furthest.dif
+                    furthest.country = result.furthest.country
+                }
+
+                if (result.guessedWinner) {
+                    guessedWinner.push(result.user)
+                }
+
+                if (result.guessedLooser) {
+                    guessedLooser.push(result.user)
+                }
+
+                if (result.guessedBottom5 > guessedBottom5.guessedAmount) {
+                    guessedBottom5.user = [result.user]
+                    guessedBottom5.guessedAmount = result.guessedBottom5
+
+                } else if (result.guessedBottom5 === guessedBottom5.guessedAmount) {
+                    guessedBottom5.user.push(result.user)
+                }
+
+
+                if (result.guessedTop5 > guessedTop5.guessedAmount) {
+                    guessedTop5.user = [result.user]
+                    guessedTop5.guessedAmount = result.guessedTop5
+
+                } else if (result.guessedTop5 === guessedTop5.guessedAmount) {
+                    guessedTop5.user.push(result.user)
+                }
+
+
+                individualResults.push(result)
+
             }
 
-            if(result.furthest?.dif > furthest.distance){
-                furthest.user = result.user
-                furthest.distance = result.furthest.dif
-                furthest.country = result.furthest.country
-            }
 
-            if(result.guessedWinner){
-                guessedWinner.push(result.user)
-            }
-
-            if(result.guessedLooser){
-                guessedLooser.push(result.user)
-            }
-
-            if(result.guessedBottom5 > guessedBottom5.guessedAmount){
-                guessedBottom5.user = result.user
-                guessedBottom5.guessedAmount = result.guessedBottom5
-            }
-
-            if(result.guessedTop5 > guessedTop5.guessedAmount){
-                guessedTop5.user = result.user
-                guessedTop5.guessedAmount = result.guessedTop5
-            }
-
-            individualResults.push(result)
         }
 
     } catch (error) {
@@ -237,7 +254,8 @@ export const compareRoomResult = async (room) => {
         guessedWinner,
         guessedBottom5,
         guessedLooser,
-        guessedTop5
+        guessedTop5,
+        playersDone
     }
 
 

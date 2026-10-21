@@ -35,7 +35,7 @@ export async function getRoom(code) {
 }
 
 export async function joinRoom(code, name) {
-  
+
     const response1 = await fetch(`${API_URL}/users`, {
         method: "POST",
         headers: {
@@ -46,13 +46,17 @@ export async function joinRoom(code, name) {
         }),
     });
 
+    if (response1.status === 409) {
+        throw new Error("USERNAME_EXISTS");
+    }
+
     if (!response1.ok) {
-        throw new Error("Failed to create user");
+        throw new Error("CREATE_USER_FAILED");
     }
 
     const user = await response1.json();
 
-    
+
     const response2 = await fetch(`${API_URL}/rooms/${code}`, {
         method: "POST",
         headers: {
@@ -63,24 +67,28 @@ export async function joinRoom(code, name) {
         }),
     });
 
+    if(response2.status === 409){
+        throw new Error("PLAYER_EXISTS")
+    }
+
     if (!response2.ok) {
-        throw new Error("Failed to join room");
+        throw new Error("JOIN_ROOM_FAILED");
     }
 
     return await user;
 }
 
-export async function getParticipatingCountries(year){
+export async function getParticipatingCountries(year) {
 
     const response = await fetch(`${API_URL}/results/year/${year}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
         },
-        
+
     });
 
-    if (!response.ok){
+    if (!response.ok) {
         throw new Error("Failed to join room")
     }
 

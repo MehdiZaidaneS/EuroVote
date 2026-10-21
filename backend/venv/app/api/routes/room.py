@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from core.database import SessionLocal
@@ -27,7 +27,14 @@ def user_join_room(
     room_code: str,
     db: Session = Depends(get_db)
 ):
-    return join_room(db, room_code, user.player_id)
+    room = join_room(db, room_code, user.player_id)
+
+    if room is None:
+        raise HTTPException(
+                    status_code=409,
+                    detail="Player already exists"
+            )
+    return room
     
 
 @router.get("/{room_code}", response_model=RoomResponse)

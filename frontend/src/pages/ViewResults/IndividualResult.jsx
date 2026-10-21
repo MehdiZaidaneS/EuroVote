@@ -27,6 +27,10 @@ function IndividualResult() {
             handleGetPointsByUser()
         }
 
+        if (!room && !user) {
+            navigate("/")
+        }
+
     }, [room?.year])
 
     useEffect(() => {
@@ -85,13 +89,13 @@ function IndividualResult() {
                     <IndividualResultCard
                         icon="🎯"
                         upper={myResult.perfectMessage}
-                        lower={`You guessed ${myResult.perfect} positions right`}
+                        lower={`You guessed ${myResult.perfect} positions correctly`}
                     />
 
 
                     {myResult.closest?.dif !== 0 && (
                         <IndividualResultCard
-                            icon="🎯"
+                            icon="😬"
                             upper="Ouh, that was close"
                             lower={`You guessed ${myResult.closest?.country} ${myResult.closest?.dif} positions away`}
                         />
@@ -101,7 +105,7 @@ function IndividualResult() {
                     {myResult.furthest?.dif !== 0 && (
                         <IndividualResultCard
 
-                            icon="📉"
+                            icon="💩"
                             upper="Sorry, my bad"
                             lower={`You guessed ${myResult.furthest?.country} ${myResult.furthest?.dif} positions away`}
                         />

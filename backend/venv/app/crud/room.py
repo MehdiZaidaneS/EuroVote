@@ -34,7 +34,7 @@ def join_room(db: Session, code: str, user_id: int):
         return None
 
     if user in room.players:
-        return room
+        return None
 
     room.players.append(user)
 

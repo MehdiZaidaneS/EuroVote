@@ -21,6 +21,10 @@ function PreviewPoints() {
 
     handleGetPointsByUser()
 
+    if(user.submitted === "True"){
+      navigate("/result")
+    }
+
 
   }, [])
 
@@ -47,18 +51,18 @@ function PreviewPoints() {
 
       const resultsWithFlags = await Promise.all(
         points_obtained.map(async (result) => {
-          //const flag = await getCountryFlag(result.country.country_name)
+          const flag = await getCountryFlag(result.country.country_name)
 
           return {
             ...result,
-            //flag
+            flag
           }
         })
       )
 
       resultsWithFlags.sort((a, b) => a.position - b.position)
 
-      console.log(resultsWithFlags)
+    
 
       setPointsGiven(resultsWithFlags);
 
@@ -90,7 +94,7 @@ function PreviewPoints() {
     draggedCard.points = pointsAtDropPosition
     newPoints.splice(dropIndex, 0, draggedCard)
 
-   
+
     try {
       await handleUpdatePoints(
         draggedCard.room_id,
@@ -136,8 +140,10 @@ function PreviewPoints() {
           )
         })}
       </div>
-
-      <button className='action-button submit' onClick={() => navigate("/result")}>Submit</button>
+      <button className='action-button submit' onClick={() => {
+        setUser({ ...user, submitted: "True" });
+        navigate("/result");
+      }}>Submit</button>
 
       {/* <p className='back-button' onClick={() => navigate("/voting")}><em>Back to country selections...</em></p> */}
 

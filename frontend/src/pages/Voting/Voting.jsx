@@ -18,6 +18,9 @@ function Voting() {
         if (!room && !user) {
             navigate("/")
         }
+        if (user.submitted === "True") {
+            navigate("/result")
+        }
 
     }, [room, user, navigate])
 
@@ -42,11 +45,11 @@ function Voting() {
 
             const resultsWithFlags = await Promise.all(
                 countries.map(async (result) => {
-                    //const flag = await getCountryFlag(result.country.country_name)
+                    const flag = await getCountryFlag(result.country.country_name)
 
                     return {
                         ...result,
-                        //flag
+                        flag
                     }
                 })
             )
@@ -68,7 +71,6 @@ function Voting() {
             const sortedPoints = [...pointsGiven]
                 .sort((a, b) => b.points - a.points)
 
-            console.log(sortedPoints)    
 
             await Promise.all(
                 sortedPoints.map((point, index) => {

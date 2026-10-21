@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends
+
+
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from core.database import SessionLocal
@@ -18,7 +20,13 @@ def get_db():
 
 @router.post("/", response_model=UserResponse)
 def add_user(user: UserCreate, db: Session = Depends(get_db)):
-    return create_user(db, user.name)
+    new_user = create_user(db, user.name)
+    if new_user is None:
+        raise HTTPException(
+            status_code=409,
+            detail="Username already exists"
+        )
+    return new_user
 
 
 @router.get("/", response_model=list[UserResponse])
