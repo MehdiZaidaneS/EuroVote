@@ -12,6 +12,7 @@ import Voting from './pages/Voting/Voting.jsx'
 import { UserProvider } from './UserContext.jsx'
 import PreviewPoints from './pages/PreviewPoints/PreviewPoints.jsx'
 import IndividualResult from './pages/ViewResults/IndividualResult.jsx'
+import NotFoundPage from './pages/NotFound/NotFoundPage.jsx'
 
 const root = document.getElementById('root')
 
@@ -32,6 +33,7 @@ createRoot(root).render(
             <Route path='/voting' element={<Voting />} />
             <Route path="/preview" element={<PreviewPoints />} />
             <Route path='/result' element={<IndividualResult />} />
+            <Route path="*" element={<NotFoundPage />} />
 
           </Routes>
         </UserProvider>

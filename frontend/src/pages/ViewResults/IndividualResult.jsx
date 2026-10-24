@@ -123,7 +123,7 @@ function IndividualResult() {
                             <IndividualResultCard
                                 icon="🏆"
                                 upper={myResult.top5Message}
-                                lower={`You guessed ${myResult.guessedTop5}/5 correct in TOP 5`}
+                                lower={`You guessed ${myResult.guessedTop5} correct from TOP 5`}
                             />
 
                         )
@@ -134,7 +134,7 @@ function IndividualResult() {
                             <IndividualResultCard
                                 icon="⬇️"
                                 upper={myResult.bot5Message}
-                                lower={`You guessed ${myResult.guessedBottom5}/5 in LAST 5`}
+                                lower={`You guessed ${myResult.guessedBottom5} correct from LAST 5`}
                             />
                         )
                     }

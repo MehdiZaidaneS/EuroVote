@@ -184,7 +184,7 @@ function ViewResults() {
                     <IndividualResultCard
                       icon="🔝"
                       upper={`${roomResults.guessedTop5.user.join(" & ")}, guessed the best`}
-                      lower={`${roomResults.guessedTop5.guessedAmount}/5 from TOP 5`}
+                      lower={`${roomResults.guessedTop5.guessedAmount} from TOP 5`}
                     />
                   }
 
@@ -193,7 +193,7 @@ function ViewResults() {
                     <IndividualResultCard
                       icon="💯"
                       upper={`${roomResults.guessedBottom5.user.join(" & ")}, guessed the best`}
-                      lower={`${roomResults.guessedBottom5.guessedAmount}/5 from BOTTOM 5`}
+                      lower={`${roomResults.guessedBottom5.guessedAmount} from BOTTOM 5`}
                     />
                   }
 
