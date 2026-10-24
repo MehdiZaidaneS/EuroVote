@@ -41,6 +41,11 @@ function Voting() {
 
 
     const loadVotingData = async () => {
+
+        if (loading) return;
+
+        setLoading(true);
+
         try {
             const countries = await getParticipatingCountries(room.year)
 
@@ -57,12 +62,17 @@ function Voting() {
 
             const points = await getPointsGivenByUser(room.id, user.id)
 
+            //await new Promise(resolve => setTimeout(resolve, 10000));
+
             setResults(resultsWithFlags)
             setPointsGiven(points)
 
         } catch (error) {
             console.error(error)
+        } finally {
+            setLoading(false);
         }
+
     }
 
 
@@ -111,19 +121,21 @@ function Voting() {
             <h4 className='code'> Code: <em>{room?.code}</em></h4>
             <h4 className='username'>Welcome, {user?.name}</h4>
 
-            {
-                results && !selectedCountry && <h3>
-                    {pointsGiven.length === results.length
-                        ? "You are ready to submit your votes!"
-                        : `You have voted for ${pointsGiven.length}/${results.length} countries`
-                    }
-                </h3>
-            }
+            {loading && !selectedCountry &&(
+                <div className="voting-loading">
+                    <span className="spinner"></span>
+                </div>
+            )}
 
 
-
-            {results && !selectedCountry && (
+            {!loading && results && !selectedCountry && (
                 <>
+                    <h3>
+                        {pointsGiven.length === results.length
+                            ? "You are ready to submit your votes!"
+                            : `You have voted for ${pointsGiven.length}/${results.length} countries`
+                        }
+                    </h3>
                     <div className='participating-countries'>
                         {results.sort((a, b) => a.country.country_name.localeCompare(b.country.country_name)).map((result) => {
                             const hasReceivedPoints = pointsGiven.some(
@@ -153,7 +165,7 @@ function Voting() {
                         <div>
                             <button
                                 className="action-button"
-                                 onClick={() => givePosition()}
+                                onClick={() => givePosition()}
                                 disabled={loading}
                             >
                                 {loading ? (
@@ -174,7 +186,7 @@ function Voting() {
             )}
 
             {
-                selectedCountry && (
+                    selectedCountry && (
                     <VotingCard result={selectedCountry} setSelectedCountry={setSelectedCountry} loadVotingData={loadVotingData} />
                 )
             }

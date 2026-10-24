@@ -24,6 +24,44 @@
     background: #555;
 }
 
+
+.all-country-points {
+    position: relative;
+}
+
+.updating-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.507);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.updating-message {
+    color: #222;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.updating-message .spinner {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    border: 4px solid #ddd;
+    border-top-color: #6c63ff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 @media (max-width: 900px) {
     .all-country-points {
          grid-template-rows: repeat(13, 1fr);

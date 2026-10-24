@@ -28,6 +28,10 @@ function IndividualResult() {
             return;
         }
 
+        if(user.submitted === "False"){
+            navigate("/voting")
+        }
+
         handleLoadResults();
     }, [room?.id, room?.year, user?.id]);
 

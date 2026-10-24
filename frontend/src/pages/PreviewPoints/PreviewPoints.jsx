@@ -15,15 +15,24 @@ function PreviewPoints() {
 
   const [pointsGiven, setPointsGiven] = useState([])
   const [draggedIndex, setDraggedIndex] = useState(null)
+  const [loading, setLoading] = useState(false);
+  const [updating, setUpdating] = useState(false);
 
 
   useEffect(() => {
 
-    handleGetPointsByUser()
+    if (!room || !user) {
+      navigate("/");
+      return;
+    }
 
-    if(user.submitted === "True"){
+    if (user.submitted === "True") {
       navigate("/result")
     }
+
+    setLoading(true);
+
+    handleGetPointsByUser()
 
 
   }, [])
@@ -45,6 +54,9 @@ function PreviewPoints() {
 
 
   const handleGetPointsByUser = async () => {
+
+    setUpdating(true)
+
     try {
 
       const points_obtained = await getPointsGivenByUser(room.id, user.id)
@@ -62,7 +74,6 @@ function PreviewPoints() {
 
       resultsWithFlags.sort((a, b) => a.position - b.position)
 
-    
 
       setPointsGiven(resultsWithFlags);
 
@@ -70,7 +81,11 @@ function PreviewPoints() {
 
     } catch (error) {
       console.log(error)
+    } finally {
+      setLoading(false);
+      setUpdating(false);
     }
+
   }
 
   const handleDragStart = (index) => {
@@ -82,18 +97,19 @@ function PreviewPoints() {
   }
 
   const handleDrop = async (dropIndex) => {
-    if (draggedIndex === null || draggedIndex === dropIndex) {
-      return
+    if (draggedIndex === null || draggedIndex === dropIndex || updating) {
+      return;
     }
 
-    const newPoints = [...pointsGiven]
-    const [draggedCard] = newPoints.splice(draggedIndex, 1)
+    const newPoints = [...pointsGiven];
+    const [draggedCard] = newPoints.splice(draggedIndex, 1);
 
+    const pointsAtDropPosition = newPoints[dropIndex].points;
 
-    const pointsAtDropPosition = newPoints[dropIndex].points
-    draggedCard.points = pointsAtDropPosition
-    newPoints.splice(dropIndex, 0, draggedCard)
+    draggedCard.points = pointsAtDropPosition;
+    newPoints.splice(dropIndex, 0, draggedCard);
 
+    setUpdating(true);
 
     try {
       await handleUpdatePoints(
@@ -101,29 +117,28 @@ function PreviewPoints() {
         draggedCard.player_id,
         draggedCard.country.id,
         pointsAtDropPosition
-      )
+      );
 
-      const start = Math.min(draggedIndex, dropIndex)
-      const end = Math.max(draggedIndex, dropIndex)
+      const start = Math.min(draggedIndex, dropIndex);
+      const end = Math.max(draggedIndex, dropIndex);
 
       await Promise.all(
         newPoints.slice(start, end + 1).map((point, index) => {
-          const newPosition = start + index + 1
+          const newPosition = start + index + 1;
 
-          return updatePointsPosition(
-            point.id,
-            newPosition
-          )
+          return updatePointsPosition(point.id, newPosition);
         })
-      )
-      setPointsGiven(newPoints)
+      );
 
+
+      setPointsGiven(newPoints);
     } catch (error) {
-      console.error(error)
+      console.error("Failed to update votes:", error);
+    } finally {
+      setUpdating(false);
+      setDraggedIndex(null);
     }
-
-    setDraggedIndex(null)
-  }
+  };
 
   const navigate = useNavigate()
 
@@ -132,18 +147,34 @@ function PreviewPoints() {
       <h4 className='code'> Code: <em>{room?.code}</em></h4>
       <h4 className='username'>Welcome, {user?.name}</h4>
 
+      {loading ? (
+        <div className="preview-loading">
+          <span className="spinner"></span>
+          <h2>Loading your votes...</h2>
+        </div>
+      ) : (
+        <>
+          {updating && (
+            <div className="updating-overlay">
+              <div className="updating-message">
+                <span className="spinner"></span>
+              </div>
+            </div>
+          )}
+          <div className='all-country-points'>
+            {pointsGiven.map((point, index) => {
+              return (
+                <PreviewCard key={point.id} pointsGiven={pointsGiven} point={point} position={index + 1} last={pointsGiven.length} handleGetPointsByUser={handleGetPointsByUser} onDragStart={() => handleDragStart(index)} onDragOver={handleDragOver} onDrop={() => handleDrop(index)} />
+              )
+            })}
+          </div>
+          <button className='action-button submit' onClick={() => {
+            setUser({ ...user, submitted: "True" });
+            navigate("/result");
+          }}>Submit</button>
+        </>
 
-      <div className='all-country-points'>
-        {pointsGiven.map((point, index) => {
-          return (
-            <PreviewCard key={point.id} pointsGiven={pointsGiven} point={point} position={index + 1} last={pointsGiven.length} handleGetPointsByUser={handleGetPointsByUser} onDragStart={() => handleDragStart(index)} onDragOver={handleDragOver} onDrop={() => handleDrop(index)} />
-          )
-        })}
-      </div>
-      <button className='action-button submit' onClick={() => {
-        setUser({ ...user, submitted: "True" });
-        navigate("/result");
-      }}>Submit</button>
+      )}
 
       {/* <p className='back-button' onClick={() => navigate("/voting")}><em>Back to country selections...</em></p> */}
 
