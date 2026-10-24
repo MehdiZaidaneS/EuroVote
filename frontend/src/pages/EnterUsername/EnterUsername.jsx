@@ -12,6 +12,7 @@ function EnterUsername() {
 
     const { room, setRoom } = useRoom();
     const { user, setUser } = useUser();
+    const [loading, setLoading] = useState(false)
     const [username, setUsername] = useState("")
     const [error, setError] = useState("")
 
@@ -29,11 +30,21 @@ function EnterUsername() {
             return
         }
 
+        if (loading) return;
+
+        setLoading(true);
+
         try {
 
             setError("")
             const playerJoinedRoom = await joinRoom(room.code, username.trim())
-            setUser(playerJoinedRoom)
+            setUser({
+                ...playerJoinedRoom,
+                submitted: "False"
+            })
+
+
+
 
             navigate("/voting")
 
@@ -49,6 +60,8 @@ function EnterUsername() {
             } else {
                 setError("Could not create user. Please try again.");
             }
+        }finally {
+            setLoading(false);
         }
     }
 
@@ -69,9 +82,20 @@ function EnterUsername() {
 
                     {error && <p className="error-message">{error}</p>}
 
-                    <button className='action-button' type="submit">
-                        Join room
-                    </button>
+
+                    <button
+                    className="action-button"
+                    type='submit'
+                    disabled={loading}
+                >
+                    {loading ? (
+                        <>
+                            <span className="spinner"></span>
+                        </>
+                    ) : (
+                        "Join Room"
+                    )}
+                </button>
                 </form>
             </div>
             <button className="leave-button" onClick={() => { navigate("/"); setRoom(null); }}> Leave Room</button>

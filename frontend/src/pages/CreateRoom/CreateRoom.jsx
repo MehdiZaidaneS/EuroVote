@@ -8,19 +8,29 @@ import { useNavigate } from 'react-router';
 function CreateRoom() {
 
     const [selectedYear, setSelectedYear] = useState("2026");
+    const [loading, setLoading] = useState(false)
     const { setRoom } = useRoom();
     const navigate = useNavigate();
 
 
 
     const handleCreateRoom = async () => {
+        if (loading) return;
+
+        setLoading(true);
+
         try {
             const room = await createRoom(selectedYear);
             setRoom(room);
 
-            navigate("/enter-username")
+          
+
+
+            navigate("/enter-username");
         } catch (error) {
             console.error(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -44,7 +54,20 @@ function CreateRoom() {
                     <option value="2024">2024</option>
                     <option value="2023">2023</option>
                 </select>
-                <button className='action-button' onClick={handleCreateRoom}>Create Room</button>
+
+                <button
+                    className="action-button"
+                    onClick={handleCreateRoom}
+                    disabled={loading}
+                >
+                    {loading ? (
+                        <>
+                            <span className="spinner"></span>
+                        </>
+                    ) : (
+                        "Create Room"
+                    )}
+                </button>
             </div>
 
         </div>

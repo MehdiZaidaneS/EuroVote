@@ -11,19 +11,20 @@ import { useNavigate } from 'react-router'
 function Voting() {
     const { room, setRoom } = useRoom()
     const { user, setUser } = useUser()
+    const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!room && !user) {
-            navigate("/")
+        if (!room || !user) {
+            navigate("/");
+            return;
         }
+
         if (user.submitted === "True") {
-            navigate("/result")
+            navigate("/result");
         }
-
-    }, [room, user, navigate])
-
+    }, [room, user, navigate]);
 
 
     const [results, setResults] = useState(null)
@@ -67,6 +68,11 @@ function Voting() {
 
 
     const givePosition = async () => {
+
+        if (loading) return;
+
+        setLoading(true);
+
         try {
             const sortedPoints = [...pointsGiven]
                 .sort((a, b) => b.points - a.points)
@@ -83,12 +89,15 @@ function Voting() {
 
                 )
             )
+            navigate("/preview")
 
         } catch (error) {
             console.error(error)
+        } finally {
+            setLoading(false);
         }
 
-        navigate("/preview")
+
 
     }
 
@@ -142,8 +151,22 @@ function Voting() {
                     {
                         pointsGiven.length === results.length &&
                         <div>
-                            <button className='action-button' onClick={() => givePosition()}>Continue</button>
+                            <button
+                                className="action-button"
+                                 onClick={() => givePosition()}
+                                disabled={loading}
+                            >
+                                {loading ? (
+                                    <>
+                                        <span className="spinner"></span>
+                                    </>
+                                ) : (
+                                    "Continue"
+                                )}
+                            </button>
                         </div>
+
+
                     }
 
                 </>
@@ -155,7 +178,7 @@ function Voting() {
                     <VotingCard result={selectedCountry} setSelectedCountry={setSelectedCountry} loadVotingData={loadVotingData} />
                 )
             }
-            <button className="leave-button" onClick={() => { navigate("/"); setRoom(null); setUser(null) }}> Leave Room</button>
+            <button className="leave-button" onClick={() => { setRoom(null); setUser(null); navigate("/"); }}> Leave Room</button>
 
         </div>
     )

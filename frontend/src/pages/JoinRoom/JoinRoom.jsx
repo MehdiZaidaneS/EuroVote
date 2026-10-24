@@ -9,11 +9,16 @@ function JoinRoom() {
 
   const [code, setCode] = useState("")
   const { setRoom } = useRoom()
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const navigate = useNavigate()
 
 
   const handleJoinRoom = async () => {
+
+    if (loading) return;
+
+    setLoading(true);
 
     if (!code.trim()) {
       setError("Please enter a room code!")
@@ -29,6 +34,8 @@ function JoinRoom() {
     } catch (error) {
       console.error(error);
       setError("Room not found, try again!")
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -45,7 +52,19 @@ function JoinRoom() {
             }
           }}></input>
         {error && <p className="error-message">{error}</p>}
-        <button className='action-button' onClick={handleJoinRoom}>Enter code</button>
+        <button
+                    className="action-button"
+                    onClick={handleJoinRoom}
+                    disabled={loading}
+                >
+                    {loading ? (
+                        <>
+                            <span className="spinner"></span>
+                        </>
+                    ) : (
+                        "Enter code"
+                    )}
+                </button>
       </div>
     </div>
   )

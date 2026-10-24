@@ -14,7 +14,10 @@ function ViewResults() {
 
   const [code, setCode] = useState("")
   const { room, setRoom } = useRoom()
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+
+
   const navigate = useNavigate()
   const [roomResults, setRoomResults] = useState({
     individualResults: [],
@@ -47,32 +50,43 @@ function ViewResults() {
   }, [room])
 
   const handleCompareRoomResult = async () => {
+    if (loading) return;
+
+    setLoading(true);
+
     try {
-      const room_results = await compareRoomResult(room)
-      setRoomResults(room_results)
+      const room_results = await compareRoomResult(room);
+
+      setRoomResults(room_results);
     } catch (error) {
-      console.log(error)
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
 
   const handleJoinRoom = async () => {
+    if (loading) return;
 
     if (!code.trim()) {
-      setError("Please enter a room code!")
-      return
+      setError("Please enter a room code!");
+      return;
     }
+
+    setLoading(true);
 
     try {
-      setError("")
-      const room = await getRoom(code.trim().toUpperCase())
-      setRoom(room)
-
+      setError("");
+      const room = await getRoom(code.trim().toUpperCase());
+      setRoom(room);
     } catch (error) {
       console.error(error);
-      setError("Room not found, try again!")
+      setError("Room not found, try again!");
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
 
 
@@ -92,7 +106,21 @@ function ViewResults() {
                 }
               }}></input>
             {error && <p className="error-message">{error}</p>}
-            <button className='action-button' onClick={handleJoinRoom}>Get Results</button>
+
+            <button
+              className="action-button"
+              onClick={handleJoinRoom}
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <span className="spinner"></span>
+                </>
+              ) : (
+                "Get Results"
+              )}
+            </button>
+
           </div>
         </div>
       }
@@ -100,90 +128,101 @@ function ViewResults() {
         room &&
         <div className='results-container'>
           <h4 className='code'> Code: <em>{room?.code}</em></h4>
-          <h1 className='logo'>Results</h1>
-          {
-            roomResults.playersDone == 0 &&
-            <p>Votes not available, submit your votes first...</p>
-          }
 
-          <div className='results'>
-            <div className='scoreboard'>
-              {
-                roomResults.individualResults
-                  .sort((a, b) => b.score - a.score)
-                  .map((result, index) => {
-                    return (
-                      <ResultRow
-                        key={result.user}
-                        index={index}
-                        result={result}
-                      />
-                    )
-                  })
-              }
+          {loading ? (
+            <div className="calculating-results">
+              <span className="spinner"></span>
+              <h2>Calculating results...</h2>
             </div>
-
-
-
-            <div className='other-results'>
+          ) : (
+            <>
+            <h1 className='logo'>Results</h1>
               {
-                roomResults.perfect.user != "None" &&
-                <IndividualResultCard
-                  icon="⭐"
-                  upper={`${roomResults.perfect.user}, guessed the most`}
-                  lower={`  ${roomResults.perfect.amount} countries correct!`}
-                />
-              }
-              {
-                roomResults.furthest.user != "None" &&
-                <IndividualResultCard
-                  icon="💩"
-                  upper={`${roomResults.furthest.user}, had the worst guess`}
-                  lower={`${roomResults.furthest.country} was ${roomResults.furthest.distance} positions away`}
-                />
+                roomResults.playersDone == 0 &&
+                <p>Votes not available, submit your votes first...</p>
               }
 
-              {
-                roomResults.guessedTop5.user.length > 0 &&
-                <IndividualResultCard
-                  icon="🔝"
-                  upper={`${roomResults.guessedTop5.user.join(" & ")}, guessed the best`}
-                  lower={`${roomResults.guessedTop5.guessedAmount}/5 from TOP 5`}
-                />
-              }
+              <div className='results'>
+                <div className='scoreboard'>
+                  {
+                    roomResults.individualResults
+                      .sort((a, b) => b.score - a.score)
+                      .map((result, index) => {
+                        return (
+                          <ResultRow
+                            key={result.user}
+                            index={index}
+                            result={result}
+                          />
+                        )
+                      })
+                  }
+                </div>
 
-              {
-                roomResults.guessedBottom5.user.length > 0 &&
-                <IndividualResultCard
-                  icon="💯"
-                  upper={`${roomResults.guessedBottom5.user.join(" & ")}, guessed the best`}
-                  lower={`${roomResults.guessedBottom5.guessedAmount}/5 from BOTTOM 5`}
-                />
-              }
 
-              {
-                roomResults.guessedWinner.length > 0 &&
-                <IndividualResultCard
-                  icon="🥇"
-                  upper={roomResults.guessedWinner.join(" & ")}
-                  lower={`guessed the winner!`}
-                />
 
-              }
-              {
-                roomResults.guessedLooser.length > 0 &&
-                <IndividualResultCard
-                  icon="😵‍💫"
-                  upper={roomResults.guessedLooser.join(" & ")}
-                  lower={`guessed the looser!`}
-                />
-              }
+                <div className='other-results'>
+                  {
+                    roomResults.perfect.user != "None" &&
+                    <IndividualResultCard
+                      icon="⭐"
+                      upper={`${roomResults.perfect.user}, guessed the most`}
+                      lower={`  ${roomResults.perfect.amount} countries correct!`}
+                    />
+                  }
+                  {
+                    roomResults.furthest.user != "None" &&
+                    <IndividualResultCard
+                      icon="💩"
+                      upper={`${roomResults.furthest.user}, had the worst guess`}
+                      lower={`${roomResults.furthest.country} was ${roomResults.furthest.distance} positions away`}
+                    />
+                  }
 
-            </div>
-          </div>
+                  {
+                    roomResults.guessedTop5.user.length > 0 &&
+                    <IndividualResultCard
+                      icon="🔝"
+                      upper={`${roomResults.guessedTop5.user.join(" & ")}, guessed the best`}
+                      lower={`${roomResults.guessedTop5.guessedAmount}/5 from TOP 5`}
+                    />
+                  }
+
+                  {
+                    roomResults.guessedBottom5.user.length > 0 &&
+                    <IndividualResultCard
+                      icon="💯"
+                      upper={`${roomResults.guessedBottom5.user.join(" & ")}, guessed the best`}
+                      lower={`${roomResults.guessedBottom5.guessedAmount}/5 from BOTTOM 5`}
+                    />
+                  }
+
+                  {
+                    roomResults.guessedWinner.length > 0 &&
+                    <IndividualResultCard
+                      icon="🥇"
+                      upper={roomResults.guessedWinner.join(" & ")}
+                      lower={`guessed the winner!`}
+                    />
+
+                  }
+                  {
+                    roomResults.guessedLooser.length > 0 &&
+                    <IndividualResultCard
+                      icon="😵‍💫"
+                      upper={roomResults.guessedLooser.join(" & ")}
+                      lower={`guessed the looser!`}
+                    />
+                  }
+
+                </div>
+              </div>
+            </>
+          )}
           <button className="leave-button" onClick={() => { navigate("/"); setRoom(null); }}> Leave Results</button>
 
         </div>
+
       }
     </div>
   )

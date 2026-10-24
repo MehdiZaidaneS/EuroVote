@@ -10,6 +10,7 @@ function VotingCard({ result, setSelectedCountry, loadVotingData }) {
     const [pointsGiven, setPointsGiven] = useState(false);
     const [points, setPoints] = useState(0);
     const [flipped, setFlipped] = useState(false);
+    const [loading, setLoading] = useState(false)
     const { room } = useRoom()
     const { user } = useUser()
 
@@ -36,6 +37,12 @@ function VotingCard({ result, setSelectedCountry, loadVotingData }) {
     }
 
     const handleGivePoints = async () => {
+
+        if (loading) return;
+
+        setLoading(true);
+
+
         try {
             if (!pointsGiven) {
                 await givePointstoCountry(room.id, user.id, result.country.id, points)
@@ -47,6 +54,8 @@ function VotingCard({ result, setSelectedCountry, loadVotingData }) {
             setSelectedCountry(null)
         } catch (error) {
             console.log(error)
+        }finally {
+            setLoading(false);
         }
 
     }
@@ -122,7 +131,21 @@ function VotingCard({ result, setSelectedCountry, loadVotingData }) {
                     <p className='voting-card-symbol' onClick={decreasePoints}>-</p>
                 </div>
 
-                <button className='action-button' onClick={handleGivePoints}>Submit</button>
+
+
+                <button
+                    className="action-button"
+                    onClick={handleGivePoints}
+                    disabled={loading}
+                >
+                    {loading ? (
+                        <>
+                            <span className="spinner"></span>
+                        </>
+                    ) : (
+                        "Submit"
+                    )}
+                </button>
                 <p className='back-button' onClick={() => setSelectedCountry(null)}><em>Back to country selections...</em></p>
 
             </div>
