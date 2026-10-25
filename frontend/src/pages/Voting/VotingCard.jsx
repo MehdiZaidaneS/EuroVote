@@ -18,6 +18,16 @@ function VotingCard({ result, setSelectedCountry, loadVotingData }) {
 
         handleGetPoints()
 
+        const timer = setTimeout(() => {
+            setFlipped(true)
+
+            setTimeout(() => {
+                setFlipped(false)
+            }, 400)
+        })
+
+        return () => clearTimeout(timer)
+
     }, [])
 
 
@@ -54,7 +64,7 @@ function VotingCard({ result, setSelectedCountry, loadVotingData }) {
             setSelectedCountry(null)
         } catch (error) {
             console.log(error)
-        }finally {
+        } finally {
             setLoading(false);
         }
 
@@ -71,6 +81,7 @@ function VotingCard({ result, setSelectedCountry, loadVotingData }) {
 
     return (
         <div className='voting-card-container'>
+
 
             <div className='voting-card-info'>
                 <h2>{result.country.country_name}</h2>
@@ -113,7 +124,6 @@ function VotingCard({ result, setSelectedCountry, loadVotingData }) {
                 </div>
             </div>
 
-
             <div className='voting-card-input'>
                 <div className='voting-card-input-field'>
                     <p className='voting-card-symbol' onClick={increasePoints}>+
@@ -128,10 +138,8 @@ function VotingCard({ result, setSelectedCountry, loadVotingData }) {
                             }
                         }} />
 
-                    <p className='voting-card-symbol' onClick={decreasePoints}>-</p>
+                    <p className='voting-card-symbol' onClick={decreasePoints} >-</p>
                 </div>
-
-
 
                 <button
                     className="action-button"
@@ -146,9 +154,13 @@ function VotingCard({ result, setSelectedCountry, loadVotingData }) {
                         "Submit"
                     )}
                 </button>
-                <p className='back-button' onClick={() => setSelectedCountry(null)}><em>Back to country selections...</em></p>
+
+
+
 
             </div>
+
+            <p className='back-button' onClick={() => setSelectedCountry(null)}><em>Back to country selections...</em></p>
 
         </div>
     )

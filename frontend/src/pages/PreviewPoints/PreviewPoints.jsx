@@ -147,6 +147,8 @@ function PreviewPoints() {
       <h4 className='code'> Code: <em>{room?.code}</em></h4>
       <h4 className='username'>Welcome, {user?.name}</h4>
 
+      <h3>Move or edit your votes before submitting...</h3>
+
       {loading ? (
         <div className="preview-loading">
           <span className="spinner"></span>

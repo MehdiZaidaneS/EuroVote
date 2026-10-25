@@ -93,7 +93,7 @@ export async function updatePointsPosition(point_id, position){
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-                position: Number(position)
+                position: position
             })
     });
 

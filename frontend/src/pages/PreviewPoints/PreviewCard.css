@@ -1,6 +1,6 @@
 .country-points{
     display: flex;
-    gap: 20px;
+    gap: 15px;
     margin: 3px;
     padding: 0px 10px 0px 10px;
     background-color: blue;
@@ -17,6 +17,7 @@
 
 .country-points:active{
     cursor: grabbing;
+    background-color: gray;
     opacity: 0.5;
     
 }
@@ -29,8 +30,8 @@
     margin-left: auto;
     text-align: center;
     width: 50px;
-    border: none;
-    background: none;
+    background-color: rgba(255, 255, 255, 0.029);
+    border: 1px solid rgba(0, 0, 0, 0.088);
     color: white;
     font-size: 15px;
 }

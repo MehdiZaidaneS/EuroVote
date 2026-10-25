@@ -78,38 +78,31 @@ function Voting() {
 
 
     const givePosition = async () => {
-
         if (loading) return;
 
         setLoading(true);
 
         try {
             const sortedPoints = [...pointsGiven]
-                .sort((a, b) => b.points - a.points)
-
+                .sort((a, b) => b.points - a.points);
 
             await Promise.all(
                 sortedPoints.map((point, index) => {
-                    if (point.position === null) {
-                        updatePointsPosition(point.id, index + 1)
+                    return updatePointsPosition(
+                        point.id,
+                        index + 1
+                    );
+                })
+            );
 
-                    }
-
-                }
-
-                )
-            )
-            navigate("/preview")
+            navigate("/preview");
 
         } catch (error) {
-            console.error(error)
+            console.error("Failed to update positions:", error);
         } finally {
             setLoading(false);
         }
-
-
-
-    }
+    };
 
 
 
@@ -121,7 +114,7 @@ function Voting() {
             <h4 className='code'> Code: <em>{room?.code}</em></h4>
             <h4 className='username'>Welcome, {user?.name}</h4>
 
-            {loading && !selectedCountry &&(
+            {loading && !selectedCountry && (
                 <div className="voting-loading">
                     <span className="spinner"></span>
                 </div>
@@ -186,7 +179,7 @@ function Voting() {
             )}
 
             {
-                    selectedCountry && (
+                selectedCountry && (
                     <VotingCard result={selectedCountry} setSelectedCountry={setSelectedCountry} loadVotingData={loadVotingData} />
                 )
             }

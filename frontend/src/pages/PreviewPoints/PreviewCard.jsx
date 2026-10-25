@@ -17,71 +17,90 @@ function PreviewCard({ point, position, handleGetPointsByUser, pointsGiven, last
     const { room } = useRoom()
     const { user } = useUser()
 
+
     const handleUpdatePoints = async () => {
         try {
+            const newPoints = points === "" ? 0 : Number(points);
+
+            if (!Number.isFinite(newPoints) || newPoints < 0 || newPoints > 10) {
+                setPoints(point.points);
+                return;
+            }
+
+            // Don't update if the score hasn't changed
+            if (newPoints === Number(point.points)) {
+                return;
+            }
+
+            // Save the new score
             await updatePointstoCountry(
                 room.id,
                 user.id,
                 point.country.id,
-                points
-            )
+                newPoints
+            );
 
-            const updatedPoints = await handleGetPointsByUser()
+            // Fetch the latest points after saving
+            const updatedPoints = await handleGetPointsByUser();
 
-            const sortedPoints = [...updatedPoints]
-                .sort((a, b) => b.points - a.points)
+            if (!updatedPoints) return;
 
-            const oldPosition = point.position
+            // Sort by score, highest first
+            const sortedPoints = [...updatedPoints].sort(
+                (a, b) => Number(b.points) - Number(a.points)
+            );
 
-            const newPosition = sortedPoints.findIndex(
-                p => p.id === point.id
-            ) + 1
-
-            const start = Math.min(oldPosition, newPosition)
-            const end = Math.max(oldPosition, newPosition)
-
-            const affectedPoints = sortedPoints.filter(
-                p => p.position >= start && p.position <= end
-            )
-
+            // Update every position to match the sorted ranking
             await Promise.all(
-                affectedPoints.map((point) => {
-                    const newPosition = sortedPoints.findIndex(
-                        p => p.id === point.id
-                    ) + 1
+                sortedPoints.map((item, index) =>
+                    updatePointsPosition(item.id, index + 1)
+                )
+            );
 
-                    return updatePointsPosition(point.id, newPosition)
-                })
-            )
-
-            await handleGetPointsByUser()
+            // Refresh the UI with the final positions
+            await handleGetPointsByUser();
 
         } catch (error) {
-            console.log(error)
+            console.error("Error updating points:", error);
         }
-    }
+    };
+
 
     return (
         <div className={last === position ? `country-points position-last` : `country-points position-${position}`} draggable={true} onDragStart={onDragStart} onDragOver={onDragOver} onDrop={onDrop} >
-            <p>{position}</p>
-            <img src={point.flag} width={20} height={15}></img>
-            <p>{point.country.country_name}</p>
+            <p className="country-position">{position}</p>
+
+            <img src={point.flag} width={20} height={15} alt="" />
+
+            <p className="country-name">
+                {point.country.country_name}
+            </p>
+
 
             <input
-                type='number'
+                type="number"
                 className="points"
                 value={points}
                 onChange={(e) => {
                     const value = e.target.value;
 
-                    if (value >= 0 && value <= 10) {
+                    if (value === "") {
+                        setPoints("");
+                    } else if (Number(value) >= 0 && Number(value) <= 10) {
                         setPoints(value);
-                    } else if (value == "") (
-                        setPoints(0)
-                    )
+                    }
                 }}
-                onBlur={handleUpdatePoints}
+                onBlur={() => {
+                    if (points === "") {
+                        setPoints(0);
+                    }
+                    handleUpdatePoints();
+                }}
             />
+            <span className="drag-handle" title="Drag to reorder" style={{ cursor: "grab" }}>
+                ⠿
+            </span>
+
         </div>
     )
 }

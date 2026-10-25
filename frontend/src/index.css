@@ -1,81 +1,86 @@
 body {
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #4f23d5, #cf23d5);
-  background-size: 400% 400%;
-  animation: gradient 30s ease infinite;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  color: white;
-  height: 100vh;
-  width: 100%;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #e1248c, #cf23d5);
+    background-size: 400% 400%;
+    animation: gradient 30s ease infinite;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: white;
+    height: 100vh;
+    width: 100%;
 
-  margin: 0 auto;
-  text-align: center;
+    margin: 0 auto;
+    text-align: center;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  /* horizontal */
-  align-items: center;
-  /* vertical */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* horizontal */
+    align-items: center;
+    /* vertical */
 }
 
 @keyframes gradient {
     0% {
         background-position: 0% 50%;
     }
+
     50% {
         background-position: 100% 50%;
     }
+
     100% {
         background-position: 0% 50%;
     }
 }
 
 .action-button {
-  padding: 10px;
-  margin-bottom: 5px;
-  font-size: 20px;
-  background-color: white;
-  text-decoration: none;
-  border-radius: 12px;
-  color: #4f23d5;
-  font-weight: bold ;
-  border: none;
+    padding: 10px;
+    margin-bottom: 5px;
+    font-size: 20px;
+    background-color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    color: #4f23d5;
+    font-weight: bold;
+    border: none;
 }
 
 .action-button:hover {
-  color: black;
-  background-color: rgb(255, 223, 182);
-  cursor: pointer;
+    color: black;
+    background-color: rgb(255, 223, 182);
+    cursor: pointer;
 }
 
 
-.logo{
+.logo {
     font-size: 50px;
     margin-bottom: 0px;
     cursor: pointer;
 }
 
-.logo:hover{
+.logo:hover {
     color: rgb(254, 215, 222);
 }
 
-.code{
+.code {
     margin: 0px;
     position: absolute;
     padding: 20px;
     top: 10px;
     right: 10px;
+    opacity: 0.8;
 }
 
-.username{
+.username {
     margin: 0px;
     position: absolute;
     padding: 20px;
     top: 10px;
     left: 10px;
+    opacity: 0.8;
 }
 
-.leave-button{
+.leave-button {
+    opacity: 0.8;
     margin: 20px;
     position: absolute;
     bottom: 0px;
@@ -87,13 +92,14 @@ body {
     color: white;
 }
 
-.leave-button:hover{
+.leave-button:hover {
     cursor: pointer;
     text-decoration: underline;
+    opacity: 1;
 }
 
 
-.error-message{
+.error-message {
     font-style: italic;
     color: black;
     font-weight: bold;
@@ -122,4 +128,23 @@ body {
     to {
         transform: rotate(360deg);
     }
+}
+
+
+@media (max-width: 600px) {
+
+    .code {
+
+        font-size: 13px;
+    }
+
+    .username {
+
+        font-size: 13px;
+    }
+
+    .leave-button {
+        font-size: 13px;
+    }
+
 }
