@@ -126,7 +126,7 @@ function VotingCard({ result, setSelectedCountry, loadVotingData }) {
 
             <div className='voting-card-input'>
                 <div className='voting-card-input-field'>
-                    <p className='voting-card-symbol' onClick={increasePoints}>+
+                    <p className='voting-card-symbol' onClick={increasePoints} style={{background: "green"}}>+
                     </p>
 
                     <input min={0} max={10} type='number' value={points}
@@ -138,7 +138,7 @@ function VotingCard({ result, setSelectedCountry, loadVotingData }) {
                             }
                         }} />
 
-                    <p className='voting-card-symbol' onClick={decreasePoints} >-</p>
+                    <p className='voting-card-symbol' onClick={decreasePoints} style={{background: "red"}}>-</p>
                 </div>
 
                 <button

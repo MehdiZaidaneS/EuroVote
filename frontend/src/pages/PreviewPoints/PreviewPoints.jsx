@@ -55,8 +55,6 @@ function PreviewPoints() {
 
   const handleGetPointsByUser = async () => {
 
-    setUpdating(true)
-
     try {
 
       const points_obtained = await getPointsGivenByUser(room.id, user.id)
@@ -83,7 +81,6 @@ function PreviewPoints() {
       console.log(error)
     } finally {
       setLoading(false);
-      setUpdating(false);
     }
 
   }
@@ -147,8 +144,6 @@ function PreviewPoints() {
       <h4 className='code'> Code: <em>{room?.code}</em></h4>
       <h4 className='username'>Welcome, {user?.name}</h4>
 
-      <h3>Move or edit your votes before submitting...</h3>
-
       {loading ? (
         <div className="preview-loading">
           <span className="spinner"></span>
@@ -156,6 +151,7 @@ function PreviewPoints() {
         </div>
       ) : (
         <>
+          <h3>Move or edit your votes before submitting...</h3>
           {updating && (
             <div className="updating-overlay">
               <div className="updating-message">
@@ -166,7 +162,7 @@ function PreviewPoints() {
           <div className='all-country-points'>
             {pointsGiven.map((point, index) => {
               return (
-                <PreviewCard key={point.id} pointsGiven={pointsGiven} point={point} position={index + 1} last={pointsGiven.length} handleGetPointsByUser={handleGetPointsByUser} onDragStart={() => handleDragStart(index)} onDragOver={handleDragOver} onDrop={() => handleDrop(index)} />
+                <PreviewCard key={point.id} pointsGiven={pointsGiven} point={point} position={index + 1} last={pointsGiven.length} handleGetPointsByUser={handleGetPointsByUser} onDragStart={() => handleDragStart(index)} onDragOver={handleDragOver} onDrop={() => handleDrop(index)}  setUpdating={setUpdating} />
               )
             })}
           </div>

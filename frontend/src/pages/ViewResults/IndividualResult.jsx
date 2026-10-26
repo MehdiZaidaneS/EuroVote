@@ -69,7 +69,7 @@ function IndividualResult() {
 
 
     return (
-        <div className="individual-result-page">
+        <div>
             <h4 className='code'> Code: <em>{room?.code}</em></h4>
             <h4 className='username'>Welcome, {user?.name}</h4>
 
@@ -94,10 +94,48 @@ function IndividualResult() {
                 {/* Guess statistics */}
                 <div className="result-grid">
 
+                    {myResult.guessedWinner && (
+                        <IndividualResultCard
+                            icon="👑"
+                            upper="Winner detector"
+                            lower="You guessed correct the winner!"
+                        />
+                    )}
+
+                    {myResult.guessedLooser && (
+                        <IndividualResultCard
+                            icon="💀"
+                            upper="Smelled the sh*t"
+                            lower="You guessed correct the last place!"
+                        />
+                    )}
+
+
+                    {
+                        myResult.guessedTop5 !== 0 && (
+                            <IndividualResultCard
+                                icon="🏆"
+                                upper={myResult.top5Message}
+                                lower={`You guessed ${myResult.guessedTop5} ${myResult.guessedTop5 === 1 ? "country" : "countries"} from TOP 5`}
+                            />
+
+                        )
+                    }
+
+                    {
+                        myResult.guessedBottom5 !== 0 && (
+                            <IndividualResultCard
+                                icon="⬇️"
+                                upper={myResult.bot5Message}
+                                lower={`You guessed ${myResult.guessedBottom5} ${myResult.guessedBottom5 === 1 ? "country" : "countries"} from LAST 5`}
+                            />
+                        )
+                    }
+
                     <IndividualResultCard
                         icon="🎯"
                         upper={myResult.perfectMessage}
-                        lower={`You guessed ${myResult.perfect} positions correctly`}
+                        lower={`You guessed ${myResult.perfect} ${myResult.perfect === 1 ? "position" : "positions"} correctly`}
                     />
 
 
@@ -114,7 +152,7 @@ function IndividualResult() {
                         <IndividualResultCard
 
                             icon="💩"
-                            upper="Sorry, my bad"
+                            upper="Ups, my bad"
                             lower={`You guessed ${myResult.furthest?.country} ${myResult.furthest?.dif} positions away`}
                         />
 
@@ -122,43 +160,10 @@ function IndividualResult() {
 
                     }
 
-                    {
-                        myResult.guessedTop5 !== 0 && (
-                            <IndividualResultCard
-                                icon="🏆"
-                                upper={myResult.top5Message}
-                                lower={`You guessed ${myResult.guessedTop5} correct from TOP 5`}
-                            />
-
-                        )
-                    }
-
-                    {
-                        myResult.guessedBottom5 !== 0 && (
-                            <IndividualResultCard
-                                icon="⬇️"
-                                upper={myResult.bot5Message}
-                                lower={`You guessed ${myResult.guessedBottom5} correct from LAST 5`}
-                            />
-                        )
-                    }
+                    
 
 
-                    {myResult.guessedWinner && (
-                        <IndividualResultCard
-                            icon="👑"
-                            upper="Winner vibes"
-                            lower="You guessed correct the winner!"
-                        />
-                    )}
-
-                    {myResult.guessedLooser && (
-                        <IndividualResultCard
-                            icon="💀"
-                            upper="Smelled the sh*t"
-                            lower="You guessed correct the last place!"
-                        />
-                    )}
+                    
 
                 </div>
 

@@ -22,7 +22,7 @@ function ViewResults() {
   const [roomResults, setRoomResults] = useState({
     individualResults: [],
     perfect: {
-      user: "None",
+      user: [],
       amount: 0
     },
     furthest: {
@@ -136,7 +136,7 @@ function ViewResults() {
             </div>
           ) : (
             <>
-            <h1 className='logo'>Results</h1>
+              <h1 className='logo'>Results</h1>
               {
                 roomResults.playersDone == 0 &&
                 <p>Votes not available, submit your votes first...</p>
@@ -144,6 +144,7 @@ function ViewResults() {
 
               <div className='results'>
                 <div className='scoreboard'>
+                  
                   {
                     roomResults.individualResults
                       .sort((a, b) => b.score - a.score)
@@ -162,12 +163,48 @@ function ViewResults() {
 
 
                 <div className='other-results'>
+
+                  {
+                    roomResults.guessedWinner.length > 0 &&
+                    <IndividualResultCard
+                      icon="🥇"
+                      upper={roomResults.guessedWinner.join(" & ")}
+                      lower={`guessed the winner performance!`}
+                    />
+
+                  }
+                  {
+                    roomResults.guessedLooser.length > 0 &&
+                    <IndividualResultCard
+                      icon="😵‍💫"
+                      upper={roomResults.guessedLooser.join(" & ")}
+                      lower={`guessed the worst performance!`}
+                    />
+                  }
                   {
                     roomResults.perfect.user != "None" &&
                     <IndividualResultCard
                       icon="⭐"
-                      upper={`${roomResults.perfect.user}, guessed the most`}
-                      lower={`  ${roomResults.perfect.amount} countries correct!`}
+                      upper={`${roomResults.perfect.user}`}
+                      lower={`guessed ${roomResults.perfect.amount} ${roomResults.perfect.amount === 1 ? "position" : "positions"} correct!`}
+                    />
+                  }
+
+                  {
+                    roomResults.guessedTop5.user.length > 0 &&
+                    <IndividualResultCard
+                      icon="🔝"
+                      upper={`${roomResults.guessedTop5.user.join(" & ")}`}
+                      lower={`guessed ${roomResults.guessedTop5.guessedAmount} ${roomResults.guessedTop5.guessedAmount === 1 ? "country" : "countries"} from TOP 5`}
+                    />
+                  }
+
+                  {
+                    roomResults.guessedBottom5.user.length > 0 &&
+                    <IndividualResultCard
+                      icon="💯"
+                      upper={`${roomResults.guessedBottom5.user.join(" & ")}`}
+                      lower={`guessed ${roomResults.guessedBottom5.guessedAmount} ${roomResults.guessedBottom5.guessedAmount === 1 ? "country" : "countries"} from LAST 5`}
                     />
                   }
                   {
@@ -179,41 +216,6 @@ function ViewResults() {
                     />
                   }
 
-                  {
-                    roomResults.guessedTop5.user.length > 0 &&
-                    <IndividualResultCard
-                      icon="🔝"
-                      upper={`${roomResults.guessedTop5.user.join(" & ")}, guessed the best`}
-                      lower={`${roomResults.guessedTop5.guessedAmount} from TOP 5`}
-                    />
-                  }
-
-                  {
-                    roomResults.guessedBottom5.user.length > 0 &&
-                    <IndividualResultCard
-                      icon="💯"
-                      upper={`${roomResults.guessedBottom5.user.join(" & ")}, guessed the best`}
-                      lower={`${roomResults.guessedBottom5.guessedAmount} from BOTTOM 5`}
-                    />
-                  }
-
-                  {
-                    roomResults.guessedWinner.length > 0 &&
-                    <IndividualResultCard
-                      icon="🥇"
-                      upper={roomResults.guessedWinner.join(" & ")}
-                      lower={`guessed the winner!`}
-                    />
-
-                  }
-                  {
-                    roomResults.guessedLooser.length > 0 &&
-                    <IndividualResultCard
-                      icon="😵‍💫"
-                      upper={roomResults.guessedLooser.join(" & ")}
-                      lower={`guessed the looser!`}
-                    />
-                  }
 
                 </div>
               </div>

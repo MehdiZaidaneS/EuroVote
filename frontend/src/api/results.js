@@ -98,7 +98,7 @@ export function compareIndividualResult(results, pointsGiven, user) {
     if (perfect === 0) {
         perfectMessage = "Grandma's vision"
     } else if (perfect < 5) {
-        perfectMessage = "Not lucky at all"
+        perfectMessage = "That wasn't just luck"
     } else if (perfect < 10) {
         perfectMessage = "Eagle eye"
     } else {
@@ -151,7 +151,7 @@ export const compareRoomResult = async (room) => {
     const individualResults = []
 
     let perfect = {
-        user: "None",
+        user: [],
         amount: 0
     }
     let furthest = {
@@ -200,8 +200,11 @@ export const compareRoomResult = async (room) => {
                 )
 
                 if (result.perfect > perfect.amount) {
-                    perfect.user = result.user
+                    perfect.user = [result.user]
                     perfect.amount = result.perfect
+
+                } else if (result.perfect === perfect.amount) {
+                    perfect.user.push(result.user)
                 }
 
                 if (result.furthest?.dif > furthest.distance) {

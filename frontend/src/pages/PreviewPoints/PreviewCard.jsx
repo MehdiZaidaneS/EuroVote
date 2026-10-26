@@ -4,7 +4,7 @@ import { useRoom } from '../../RoomContext'
 import { useUser } from '../../UserContext'
 import { updatePointsPosition, updatePointstoCountry } from '../../api/pointsApi'
 
-function PreviewCard({ point, position, handleGetPointsByUser, pointsGiven, last, onDragStart, onDragOver, onDrop }) {
+function PreviewCard({ point, position, handleGetPointsByUser, pointsGiven, last, onDragStart, onDragOver, onDrop, setUpdating }) {
 
 
     useEffect(() => {
@@ -19,6 +19,9 @@ function PreviewCard({ point, position, handleGetPointsByUser, pointsGiven, last
 
 
     const handleUpdatePoints = async () => {
+
+        setUpdating(true)
+
         try {
             const newPoints = points === "" ? 0 : Number(points);
 
@@ -62,6 +65,8 @@ function PreviewCard({ point, position, handleGetPointsByUser, pointsGiven, last
 
         } catch (error) {
             console.error("Error updating points:", error);
+        }finally{
+            setUpdating(false)
         }
     };
 

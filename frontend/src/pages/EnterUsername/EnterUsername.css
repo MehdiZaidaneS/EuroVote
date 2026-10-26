@@ -1,12 +1,4 @@
-.username-page {
-    min-height: 100vh;
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
+
 
 .username-selection form{
     display: flex;
