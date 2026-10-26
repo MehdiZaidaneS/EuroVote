@@ -110,7 +110,7 @@ function Voting() {
 
 
     return (
-        <div>
+        <div className="voting-container">
             <h4 className='code'> Code: <em>{room?.code}</em></h4>
             <h4 className='username'>Welcome, {user?.name}</h4>
 

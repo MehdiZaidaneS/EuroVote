@@ -66,7 +66,7 @@ function EnterUsername() {
     }
 
     return (
-        <div>
+        <div className="username-page">
             <h4 className='code'> Code: <em>{room?.code}</em></h4>
 
             <h1 className='logo' onClick={() => { navigate("/"); setRoom(null); }}>Eurovote</h1>

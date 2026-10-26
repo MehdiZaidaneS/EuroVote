@@ -1,8 +1,18 @@
-.individual-result{
+.individual-result-page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.individual-result {
     max-height: 75vh;
-    overflow-y: auto;  
+    max-height: 75dvh;
+    overflow-y: auto;
     padding: 10px;
-    padding-bottom: 10px; 
+    padding-bottom: 10px;
 }
 
 

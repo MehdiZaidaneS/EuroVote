@@ -1,10 +1,20 @@
+.voting-container {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+
+
 .participating-countries {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 10px;
     margin-bottom: 20px;
-
-    max-height: 75vh;
+    max-height: 75dvh;
     overflow-y: auto;
 }
 

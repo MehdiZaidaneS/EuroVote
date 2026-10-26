@@ -69,7 +69,7 @@ function IndividualResult() {
 
 
     return (
-        <div>
+        <div className="individual-result-page">
             <h4 className='code'> Code: <em>{room?.code}</em></h4>
             <h4 className='username'>Welcome, {user?.name}</h4>
 
