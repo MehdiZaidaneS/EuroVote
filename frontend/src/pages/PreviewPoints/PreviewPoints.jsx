@@ -93,6 +93,33 @@ function PreviewPoints() {
     event.preventDefault();
   }
 
+  const handleSubmit = async () => {
+    setUpdating(true);
+
+    try {
+      await Promise.all(
+        pointsGiven.map(async (point, index) => {
+          await handleUpdatePoints(
+            room.id,
+            user.id,
+            point.country.id,
+            point.points
+          );
+
+          await updatePointsPosition(point.id, index + 1);
+        })
+      );
+
+      setUser({ ...user, submitted: "True" });
+      navigate("/result")
+    } catch (error) {
+      console.error("Failed to update votes:", error);
+    } finally {
+      setUpdating(false);
+      setDraggedIndex(null);
+    }
+  };
+
   const handleDrop = async (dropIndex) => {
     if (draggedIndex === null || draggedIndex === dropIndex || updating) {
       return;
@@ -104,37 +131,11 @@ function PreviewPoints() {
     const pointsAtDropPosition = newPoints[dropIndex].points;
 
     draggedCard.points = pointsAtDropPosition;
+    draggedCard.position = newPoints[dropIndex].position
+
     newPoints.splice(dropIndex, 0, draggedCard);
 
-    setUpdating(true);
-
-    try {
-      await handleUpdatePoints(
-        draggedCard.room_id,
-        draggedCard.player_id,
-        draggedCard.country.id,
-        pointsAtDropPosition
-      );
-
-      const start = Math.min(draggedIndex, dropIndex);
-      const end = Math.max(draggedIndex, dropIndex);
-
-      await Promise.all(
-        newPoints.slice(start, end + 1).map((point, index) => {
-          const newPosition = start + index + 1;
-
-          return updatePointsPosition(point.id, newPosition);
-        })
-      );
-
-
-      setPointsGiven(newPoints);
-    } catch (error) {
-      console.error("Failed to update votes:", error);
-    } finally {
-      setUpdating(false);
-      setDraggedIndex(null);
-    }
+    setPointsGiven(newPoints)
   };
 
   const navigate = useNavigate()
@@ -151,25 +152,24 @@ function PreviewPoints() {
         </div>
       ) : (
         <>
-          <h3>Move or edit your votes before submitting...</h3>
+          <h3 className='back-button'>Move or edit your votes before submitting...</h3>
           {updating && (
             <div className="updating-overlay">
               <div className="updating-message">
                 <span className="spinner"></span>
+                <h2>Calculating your results...</h2>
+
               </div>
             </div>
           )}
           <div className='all-country-points'>
             {pointsGiven.map((point, index) => {
               return (
-                <PreviewCard key={point.id} pointsGiven={pointsGiven} point={point} position={index + 1} last={pointsGiven.length} handleGetPointsByUser={handleGetPointsByUser} onDragStart={() => handleDragStart(index)} onDragOver={handleDragOver} onDrop={() => handleDrop(index)}  setUpdating={setUpdating} />
+                <PreviewCard key={point.id} pointsGiven={pointsGiven} index={index} setPointsGiven={setPointsGiven} point={point} position={index + 1} last={pointsGiven.length} handleGetPointsByUser={handleGetPointsByUser} onDragStart={() => handleDragStart(index)} onDragOver={handleDragOver} onDrop={() => handleDrop(index)} setUpdating={setUpdating} />
               )
             })}
           </div>
-          <button className='action-button submit' onClick={() => {
-            setUser({ ...user, submitted: "True" });
-            navigate("/result");
-          }}>Submit</button>
+          <button className='action-button submit' onClick={() => { handleSubmit() }}>Submit</button>
         </>
 
       )}

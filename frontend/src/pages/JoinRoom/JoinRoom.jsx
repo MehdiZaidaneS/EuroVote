@@ -43,7 +43,7 @@ function JoinRoom() {
   return (
     <div className='join-room-container'>
       <h1 className='logo' onClick={() => navigate("/")}>Eurovote</h1>
-      <h2>Enter room code:</h2>
+      <h3>Enter room code:</h3>
       <div className='code-selection'>
         <input type='text' value={code} onChange={(e) => setCode(e.target.value)}
           onKeyDown={(e) => {
@@ -53,18 +53,20 @@ function JoinRoom() {
           }}></input>
         {error && <p className="error-message">{error}</p>}
         <button
-                    className="action-button"
-                    onClick={handleJoinRoom}
-                    disabled={loading}
-                >
-                    {loading ? (
-                        <>
-                            <span className="spinner"></span>
-                        </>
-                    ) : (
-                        "Enter code"
-                    )}
-                </button>
+          className="action-button"
+          onClick={handleJoinRoom}
+          disabled={loading}
+        >
+          {loading ? (
+            <>
+              <span className="spinner"></span>
+            </>
+          ) : (
+            "Enter code"
+          )}
+        </button>
+
+        <p className='back-button' onClick={() => navigate("/")}><em>Back</em></p>
       </div>
     </div>
   )

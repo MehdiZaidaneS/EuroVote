@@ -70,7 +70,7 @@ function EnterUsername() {
             <h4 className='code'> Code: <em>{room?.code}</em></h4>
 
             <h1 className='logo' onClick={() => { navigate("/"); setRoom(null); }}>Eurovote</h1>
-            <h2>Enter username:</h2>
+            <h3>Enter username:</h3>
 
             <div className='username-selection'>
                 <form onSubmit={handleJoinRoom}>

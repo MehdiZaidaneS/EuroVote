@@ -27,14 +27,19 @@
     background-color: white;
     margin-bottom: 15px;
     overflow-y: auto;
+
+    margin: 0 auto;
+    justify-content: center;
+
 }
+
 
 
 
 #eurovisions option {
     padding: 5px;
     font-size: 20px;
-    font-family: 'Courier New', Courier, monospace  ;
+
 }
 
 #eurovisions option:checked {

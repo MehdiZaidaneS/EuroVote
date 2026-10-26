@@ -38,7 +38,7 @@ function App() {
         </Link>
 
         <Link className="action-button" to="/view-results">
-          Results
+          Get Results
         </Link>
       </div>
 

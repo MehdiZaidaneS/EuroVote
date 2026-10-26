@@ -97,7 +97,7 @@ function ViewResults() {
         !room &&
         <div className='join-room-container'>
           <h1 className='logo' onClick={() => navigate("/")}>Eurovote</h1>
-          <h2>Room code:</h2>
+          <h3>Room code:</h3>
           <div className='code-selection'>
             <input type='text' value={code} onChange={(e) => setCode(e.target.value)}
               onKeyDown={(e) => {
@@ -120,6 +120,8 @@ function ViewResults() {
                 "Get Results"
               )}
             </button>
+
+            <p className='back-button' onClick={() => navigate("/")}><em>Back</em></p>
 
           </div>
         </div>
@@ -144,7 +146,7 @@ function ViewResults() {
 
               <div className='results'>
                 <div className='scoreboard'>
-                  
+
                   {
                     roomResults.individualResults
                       .sort((a, b) => b.score - a.score)

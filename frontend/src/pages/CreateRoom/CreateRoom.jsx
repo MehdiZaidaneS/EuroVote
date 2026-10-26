@@ -39,7 +39,7 @@ function CreateRoom() {
     return (
         <div className='create-room-container'>
             <h1 className='logo' onClick={() => navigate("/")}>Eurovote</h1>
-            <h2>Select a year:</h2>
+            <h3>Select a year:</h3>
             <div className='eurovision-selection'>
                 <select name="eurovisions" id="eurovisions"
                     value={selectedYear}
@@ -68,6 +68,8 @@ function CreateRoom() {
                         "Create Room"
                     )}
                 </button>
+
+                <p className='back-button' onClick={() => navigate("/")}><em>Back</em></p>
             </div>
 
         </div>
