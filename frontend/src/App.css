@@ -6,6 +6,9 @@
 .app-container p{
     margin-top: 0px;
     font-size: 15px;
+   
+    text-align: center;
+    margin: 0 auto;
 }
 
 .button-action{
@@ -15,5 +18,18 @@
     width: fit-content;
     margin-top: 30px;
     margin-bottom: 50px; 
+}
+
+
+@media (max-width: 600px) {
+
+    .app-container p{
+    margin-top: 0px;
+    font-size: 15px;
+    width: 90%;
+    text-align: center;
+    margin: 0 auto;
+}
+
 }
 
