@@ -77,6 +77,8 @@
 @media (max-width: 600px) {
     .all-country-points {
         grid-template-rows: repeat(26, 1fr);
+        width: 85%;
+        margin: 0 auto;
     }
 
     .preview-points h3{
@@ -86,7 +88,6 @@
 
 
 }
-
 
 .submit {
     margin-top: 20px;

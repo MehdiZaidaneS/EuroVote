@@ -152,17 +152,16 @@ function PreviewPoints() {
         </div>
       ) : (
         <>
-          <h3 className='back-button'>Move or edit your votes before submitting...</h3>
           {updating ? (
-            <div className="updating-overlay">
-              <div className="updating-message">
+            <div>
+              <div>
                 <span className="spinner"></span>
                 <h2>Submitting your votes...</h2>
               </div>
             </div>
           ) : (
             <>
-
+              <h3 className='back-button'>Move or edit your votes before submitting...</h3>
               <div className='all-country-points'>
                 {pointsGiven.map((point, index) => {
                   return (
