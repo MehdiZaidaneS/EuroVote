@@ -11,6 +11,7 @@ function CreateRoom() {
     const [loading, setLoading] = useState(false)
     const { setRoom } = useRoom();
     const navigate = useNavigate();
+    const [loadingMessage, setLoadingMessage] = useState("");
 
 
 
@@ -19,20 +20,40 @@ function CreateRoom() {
 
         setLoading(true);
 
+
+        const messages = [
+            "This might take a little while. Please wait...",
+            "Connecting to the server...",
+            "Creating your Eurovision room..."
+        ];
+
+        let messageIndex = 0;
+        setLoadingMessage(messages[messageIndex]);
+
+        const interval = setInterval(() => {
+            messageIndex = (messageIndex + 1) % messages.length;
+            setLoadingMessage(messages[messageIndex]);
+        }, 2500);
+
         try {
             const room = await createRoom(selectedYear);
             setRoom(room);
 
-          
-
+            clearInterval(interval);
 
             navigate("/enter-username");
         } catch (error) {
             console.error(error);
+            clearInterval(interval);
+            setLoadingMessage("Something went wrong. Please try again.");
+
         } finally {
+            clearInterval(interval);
             setLoading(false);
         }
     };
+
+
 
 
 
@@ -63,6 +84,7 @@ function CreateRoom() {
                     {loading ? (
                         <>
                             <span className="spinner"></span>
+                            {loadingMessage}
                         </>
                     ) : (
                         "Create Room"
