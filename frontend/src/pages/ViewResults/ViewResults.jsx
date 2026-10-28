@@ -16,6 +16,7 @@ function ViewResults() {
   const { room, setRoom } = useRoom()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [loadingMessage, setLoadingMessage] = useState("");
 
 
   const navigate = useNavigate()
@@ -76,15 +77,35 @@ function ViewResults() {
 
     setLoading(true);
 
+    const messages = [
+      "",
+      "This might take a little while. Please wait...",
+      `Searching for room...`,
+      "Joining your Eurovision room..."
+    ];
+
+    let messageIndex = 0;
+    setLoadingMessage(messages[messageIndex]);
+
+    const interval = setInterval(() => {
+      messageIndex = (messageIndex + 1) % messages.length;
+      setLoadingMessage(messages[messageIndex]);
+    }, 5000);
+
     try {
       setError("");
       const room = await getRoom(code.trim().toUpperCase());
+
+      clearInterval(interval)
+
       setRoom(room);
     } catch (error) {
       console.error(error);
+      clearInterval(interval)
       setError("Room not found, try again!");
     } finally {
       setLoading(false);
+      clearInterval(interval)
     }
   };
 
@@ -99,13 +120,19 @@ function ViewResults() {
           <h1 className='logo' onClick={() => navigate("/")}>Eurovote</h1>
           <h3>Room code:</h3>
           <div className='code-selection'>
-            <input type='text' value={code} onChange={(e) => setCode(e.target.value)}  autoComplete="off" name="view-results-room" data-form-type="other"
+            <input type='text' value={code} onChange={(e) => setCode(e.target.value)} autoComplete="off" name="view-results-room" data-form-type="other"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   handleJoinRoom()
                 }
               }}></input>
             {error && <p className="error-message">{error}</p>}
+
+
+            {
+              loading &&
+              <p>{loadingMessage}</p>
+            }
 
             <button
               className="action-button"
@@ -140,87 +167,90 @@ function ViewResults() {
             <>
               <h1 className='logo'>Results</h1>
               {
-                roomResults.playersDone == 0 &&
-                <p>Votes not available, submit your votes first...</p>
-              }
+                roomResults.playersDone == 0 ? (
+                  <p>Votes not available, submit your votes first...</p>
+                ) :
+                  (
+                    <div className='results'>
+                      <div className='scoreboard'>
 
-              <div className='results'>
-                <div className='scoreboard'>
+                        {
+                          roomResults.individualResults
+                            .sort((a, b) => b.score - a.score)
+                            .map((result, index) => {
+                              return (
+                                <ResultRow
+                                  key={result.user}
+                                  index={index}
+                                  result={result}
+                                />
+                              )
+                            })
+                        }
+                      </div>
 
-                  {
-                    roomResults.individualResults
-                      .sort((a, b) => b.score - a.score)
-                      .map((result, index) => {
-                        return (
-                          <ResultRow
-                            key={result.user}
-                            index={index}
-                            result={result}
+
+
+                      <div className='other-results'>
+
+                        {
+                          roomResults.guessedWinner.length > 0 &&
+                          <IndividualResultCard
+                            icon="🥇"
+                            upper={roomResults.guessedWinner.join(" & ")}
+                            lower={`guessed the winner performance!`}
                           />
-                        )
-                      })
-                  }
-                </div>
+
+                        }
+                        {
+                          roomResults.guessedLooser.length > 0 &&
+                          <IndividualResultCard
+                            icon="😵‍💫"
+                            upper={roomResults.guessedLooser.join(" & ")}
+                            lower={`guessed the worst performance!`}
+                          />
+                        }
+                        {
+                          roomResults.perfect.user != "None" &&
+                          <IndividualResultCard
+                            icon="⭐"
+                            upper={`${roomResults.perfect.user}`}
+                            lower={`guessed ${roomResults.perfect.amount} ${roomResults.perfect.amount === 1 ? "position" : "positions"} correct!`}
+                          />
+                        }
+
+                        {
+                          roomResults.guessedTop5.user.length > 0 &&
+                          <IndividualResultCard
+                            icon="🔝"
+                            upper={`${roomResults.guessedTop5.user.join(" & ")}`}
+                            lower={`guessed ${roomResults.guessedTop5.guessedAmount} ${roomResults.guessedTop5.guessedAmount === 1 ? "country" : "countries"} from TOP 5`}
+                          />
+                        }
+
+                        {
+                          roomResults.guessedBottom5.user.length > 0 &&
+                          <IndividualResultCard
+                            icon="💯"
+                            upper={`${roomResults.guessedBottom5.user.join(" & ")}`}
+                            lower={`guessed ${roomResults.guessedBottom5.guessedAmount} ${roomResults.guessedBottom5.guessedAmount === 1 ? "country" : "countries"} from LAST 5`}
+                          />
+                        }
+                        {
+                          roomResults.furthest.user != "None" &&
+                          <IndividualResultCard
+                            icon="💩"
+                            upper={`${roomResults.furthest.user}, had the worst guess`}
+                            lower={`${roomResults.furthest.country} was ${roomResults.furthest.distance} positions away`}
+                          />
+                        }
 
 
+                      </div>
+                    </div>
 
-                <div className='other-results'>
-
-                  {
-                    roomResults.guessedWinner.length > 0 &&
-                    <IndividualResultCard
-                      icon="🥇"
-                      upper={roomResults.guessedWinner.join(" & ")}
-                      lower={`guessed the winner performance!`}
-                    />
-
-                  }
-                  {
-                    roomResults.guessedLooser.length > 0 &&
-                    <IndividualResultCard
-                      icon="😵‍💫"
-                      upper={roomResults.guessedLooser.join(" & ")}
-                      lower={`guessed the worst performance!`}
-                    />
-                  }
-                  {
-                    roomResults.perfect.user != "None" &&
-                    <IndividualResultCard
-                      icon="⭐"
-                      upper={`${roomResults.perfect.user}`}
-                      lower={`guessed ${roomResults.perfect.amount} ${roomResults.perfect.amount === 1 ? "position" : "positions"} correct!`}
-                    />
-                  }
-
-                  {
-                    roomResults.guessedTop5.user.length > 0 &&
-                    <IndividualResultCard
-                      icon="🔝"
-                      upper={`${roomResults.guessedTop5.user.join(" & ")}`}
-                      lower={`guessed ${roomResults.guessedTop5.guessedAmount} ${roomResults.guessedTop5.guessedAmount === 1 ? "country" : "countries"} from TOP 5`}
-                    />
-                  }
-
-                  {
-                    roomResults.guessedBottom5.user.length > 0 &&
-                    <IndividualResultCard
-                      icon="💯"
-                      upper={`${roomResults.guessedBottom5.user.join(" & ")}`}
-                      lower={`guessed ${roomResults.guessedBottom5.guessedAmount} ${roomResults.guessedBottom5.guessedAmount === 1 ? "country" : "countries"} from LAST 5`}
-                    />
-                  }
-                  {
-                    roomResults.furthest.user != "None" &&
-                    <IndividualResultCard
-                      icon="💩"
-                      upper={`${roomResults.furthest.user}, had the worst guess`}
-                      lower={`${roomResults.furthest.country} was ${roomResults.furthest.distance} positions away`}
-                    />
-                  }
-
-
-                </div>
-              </div>
+                  )
+              }
             </>
           )}
           <button className="leave-button" onClick={() => { navigate("/"); setRoom(null); }}> Leave Results</button>

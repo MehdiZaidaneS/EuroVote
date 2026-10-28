@@ -22,8 +22,9 @@ function CreateRoom() {
 
 
         const messages = [
+            "",
             "This might take a little while. Please wait...",
-            "Connecting to the server...",
+            `Fetching ${selectedYear} contestants...`,
             "Creating your Eurovision room..."
         ];
 
@@ -33,7 +34,7 @@ function CreateRoom() {
         const interval = setInterval(() => {
             messageIndex = (messageIndex + 1) % messages.length;
             setLoadingMessage(messages[messageIndex]);
-        }, 2500);
+        }, 5000);
 
         try {
             const room = await createRoom(selectedYear);
@@ -76,6 +77,12 @@ function CreateRoom() {
                     <option value="2023">2023</option>
                 </select>
 
+
+                {
+                    loading &&
+                    <p>{loadingMessage}</p>
+                }
+
                 <button
                     className="action-button"
                     onClick={handleCreateRoom}
@@ -84,7 +91,6 @@ function CreateRoom() {
                     {loading ? (
                         <>
                             <span className="spinner"></span>
-                            {loadingMessage}
                         </>
                     ) : (
                         "Create Room"

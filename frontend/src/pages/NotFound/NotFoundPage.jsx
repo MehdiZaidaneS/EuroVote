@@ -10,7 +10,7 @@ function NotFoundPage() {
   return (
     <div>
         <h2>Page not found...</h2>
-        <button className="leave-button" onClick={() => { navigate("/");}}> Back</button>
+        <p className='back-button' onClick={() => navigate("/")}><em>Back</em></p>
     </div>
   )
 }

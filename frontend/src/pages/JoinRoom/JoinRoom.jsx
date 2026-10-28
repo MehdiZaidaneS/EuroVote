@@ -12,6 +12,7 @@ function JoinRoom() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const navigate = useNavigate()
+  const [loadingMessage, setLoadingMessage] = useState("");
 
 
   const handleJoinRoom = async () => {
@@ -19,6 +20,22 @@ function JoinRoom() {
     if (loading) return;
 
     setLoading(true);
+
+
+    const messages = [
+      "",
+      "This might take a little while. Please wait...",
+      `Searching for room...`,
+      "Joining your Eurovision room..."
+    ];
+
+    let messageIndex = 0;
+    setLoadingMessage(messages[messageIndex]);
+
+    const interval = setInterval(() => {
+      messageIndex = (messageIndex + 1) % messages.length;
+      setLoadingMessage(messages[messageIndex]);
+    }, 5000);
 
     if (!code.trim()) {
       setError("Please enter a room code!")
@@ -29,12 +46,17 @@ function JoinRoom() {
       setError("")
       const room = await getRoom(code.trim().toUpperCase())
       setRoom(room)
+      
+      clearInterval(interval);
+
       navigate("/enter-username")
 
     } catch (error) {
       console.error(error);
+      clearInterval(interval);
       setError("Room not found, try again!")
     } finally {
+      clearInterval(interval);
       setLoading(false);
     }
   }
@@ -45,13 +67,21 @@ function JoinRoom() {
       <h1 className='logo' onClick={() => navigate("/")}>Eurovote</h1>
       <h3>Enter room code:</h3>
       <div className='code-selection'>
-        <input type='text' value={code} onChange={(e) => setCode(e.target.value)}  autoComplete="off" name="join-room-code" data-form-type="other"
+        <input type='text' value={code} onChange={(e) => setCode(e.target.value)} autoComplete="off" name="join-room-code" data-form-type="other"
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               handleJoinRoom()
             }
           }}></input>
         {error && <p className="error-message">{error}</p>}
+
+        {
+          loading &&
+          <p>{loadingMessage}</p>
+        }
+
+
+
         <button
           className="action-button"
           onClick={handleJoinRoom}
