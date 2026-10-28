@@ -73,12 +73,14 @@ function EnterUsername() {
             <h3>Enter username:</h3>
 
             <div className='username-selection'>
-                <form onSubmit={handleJoinRoom}>
+                <form onSubmit={handleJoinRoom} autoComplete="off">
                     <input
                         type="text"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         autoComplete="off"
+                        name="username-room"
+                        data-form-type="other"
                     />
 
                     {error && <p className="error-message">{error}</p>}

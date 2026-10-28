@@ -45,7 +45,7 @@ function JoinRoom() {
       <h1 className='logo' onClick={() => navigate("/")}>Eurovote</h1>
       <h3>Enter room code:</h3>
       <div className='code-selection'>
-        <input type='text' value={code} onChange={(e) => setCode(e.target.value)} autoComplete="off"
+        <input type='text' value={code} onChange={(e) => setCode(e.target.value)}  autoComplete="off" name="join-room-code" data-form-type="other"
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               handleJoinRoom()
