@@ -78,6 +78,7 @@ function EnterUsername() {
                         type="text"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
+                        autoComplete="off"
                     />
 
                     {error && <p className="error-message">{error}</p>}

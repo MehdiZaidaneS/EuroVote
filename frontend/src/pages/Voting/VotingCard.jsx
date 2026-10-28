@@ -129,7 +129,7 @@ function VotingCard({ result, setSelectedCountry, loadVotingData }) {
                     <p className='voting-card-symbol' onClick={increasePoints} style={{background: "green"}}>+
                     </p>
 
-                    <input min={0} max={10} type='number' value={points}
+                    <input min={0} max={10} type='number' value={points} autoComplete="off"
                         onChange={(e) => {
                             const value = e.target.value;
 

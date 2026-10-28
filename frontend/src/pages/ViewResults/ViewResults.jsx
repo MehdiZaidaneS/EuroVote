@@ -99,7 +99,8 @@ function ViewResults() {
           <h1 className='logo' onClick={() => navigate("/")}>Eurovote</h1>
           <h3>Room code:</h3>
           <div className='code-selection'>
-            <input type='text' value={code} onChange={(e) => setCode(e.target.value)}
+            <input type='text' value={code} onChange={(e) => setCode(e.target.value)} autoComplete="off"
+
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   handleJoinRoom()

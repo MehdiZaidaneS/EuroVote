@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useRoom } from '../../RoomContext'
 import { useUser } from '../../UserContext'
 import "./Voting.css"
@@ -13,7 +13,11 @@ function Voting() {
     const { user, setUser } = useUser()
     const [loading, setLoading] = useState(false)
 
+    const countriesContainerRef = useRef(null);
+    const scrollPositionRef = useRef(0);
+
     const navigate = useNavigate();
+
 
     useEffect(() => {
         if (!room || !user) {
@@ -26,12 +30,24 @@ function Voting() {
         }
     }, [room, user, navigate]);
 
-
     const [results, setResults] = useState(null)
 
-
+    
     const [pointsGiven, setPointsGiven] = useState([])
     const [selectedCountry, setSelectedCountry] = useState(null);
+
+    useEffect(() => {
+        const container = countriesContainerRef.current;
+
+        if (container) {
+            container.scrollTop = scrollPositionRef.current;
+        }
+    }, [results, selectedCountry]);
+
+
+    
+
+
 
     useEffect(() => {
         if (room?.year && room?.id && user?.id) {
@@ -95,6 +111,8 @@ function Voting() {
                 })
             );
 
+            
+
             navigate("/preview");
 
         } catch (error) {
@@ -129,7 +147,13 @@ function Voting() {
                             : `You have voted for ${pointsGiven.length}/${results.length} countries`
                         }
                     </h3>
-                    <div className='participating-countries'>
+                    <div
+                        className="participating-countries"
+                        ref={countriesContainerRef}
+                        onScroll={(e) => {
+                            scrollPositionRef.current = e.currentTarget.scrollTop;
+                        }}
+                    >
                         {results.sort((a, b) => a.country.country_name.localeCompare(b.country.country_name)).map((result) => {
                             const hasReceivedPoints = pointsGiven.some(
                                 (point) => point.country.id === result.country.id

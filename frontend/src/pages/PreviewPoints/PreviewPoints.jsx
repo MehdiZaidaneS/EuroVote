@@ -157,8 +157,6 @@ function PreviewPoints() {
             <div className="updating-overlay">
               <div className="updating-message">
                 <span className="spinner"></span>
-                <h2>Calculating your results...</h2>
-
               </div>
             </div>
           )}

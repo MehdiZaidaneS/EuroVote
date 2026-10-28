@@ -6,8 +6,9 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 10px;
+    margin:  0 auto;
+    width: fit-content;
     margin-bottom: 20px;
-
     max-height: 75vh;
     overflow-y: auto;
 }
