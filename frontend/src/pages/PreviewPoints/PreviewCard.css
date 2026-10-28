@@ -63,3 +63,11 @@
     background-color: black;
     
 }
+
+
+@media (max-width: 600px) {
+    .all-country-points{
+        width: 85%;
+        margin: 0 auto;
+    }
+}

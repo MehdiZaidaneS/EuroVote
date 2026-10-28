@@ -153,21 +153,29 @@ function PreviewPoints() {
       ) : (
         <>
           <h3 className='back-button'>Move or edit your votes before submitting...</h3>
-          {updating && (
+          {updating ? (
             <div className="updating-overlay">
               <div className="updating-message">
                 <span className="spinner"></span>
+                <h2>Submitting your votes...</h2>
               </div>
             </div>
-          )}
-          <div className='all-country-points'>
-            {pointsGiven.map((point, index) => {
-              return (
-                <PreviewCard key={point.id} pointsGiven={pointsGiven} index={index} setPointsGiven={setPointsGiven} point={point} position={index + 1} last={pointsGiven.length} handleGetPointsByUser={handleGetPointsByUser} onDragStart={() => handleDragStart(index)} onDragOver={handleDragOver} onDrop={() => handleDrop(index)} setUpdating={setUpdating} />
-              )
-            })}
-          </div>
-          <button className='action-button submit' onClick={() => { handleSubmit() }}>Submit</button>
+          ) : (
+            <>
+
+              <div className='all-country-points'>
+                {pointsGiven.map((point, index) => {
+                  return (
+                    <PreviewCard key={point.id} pointsGiven={pointsGiven} index={index} setPointsGiven={setPointsGiven} point={point} position={index + 1} last={pointsGiven.length} handleGetPointsByUser={handleGetPointsByUser} onDragStart={() => handleDragStart(index)} onDragOver={handleDragOver} onDrop={() => handleDrop(index)} setUpdating={setUpdating} />
+                  )
+                })}
+              </div>
+              <button className='action-button submit' onClick={() => { handleSubmit() }}>Submit</button>
+            </>
+          )
+
+          }
+
         </>
 
       )}

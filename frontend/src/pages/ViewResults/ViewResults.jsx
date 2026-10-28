@@ -79,8 +79,8 @@ function ViewResults() {
 
     const messages = [
       "",
-      "This might take a little while. Please wait...",
-      `Searching for room...`,
+      `Searching your Eurovision room...`,
+      "This might take a little while...",
       "Joining your Eurovision room..."
     ];
 
@@ -90,7 +90,7 @@ function ViewResults() {
     const interval = setInterval(() => {
       messageIndex = (messageIndex + 1) % messages.length;
       setLoadingMessage(messages[messageIndex]);
-    }, 5000);
+    }, 10000);
 
     try {
       setError("");
@@ -130,7 +130,7 @@ function ViewResults() {
 
 
             {
-              loading &&
+              loading && loadingMessage != "" &&
               <p>{loadingMessage}</p>
             }
 

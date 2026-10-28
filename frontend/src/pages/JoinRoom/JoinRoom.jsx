@@ -24,8 +24,8 @@ function JoinRoom() {
 
     const messages = [
       "",
-      "This might take a little while. Please wait...",
-      `Searching for room...`,
+      `Searching your Eurovision room...`,
+      "This might take a little while...",
       "Joining your Eurovision room..."
     ];
 
@@ -35,7 +35,7 @@ function JoinRoom() {
     const interval = setInterval(() => {
       messageIndex = (messageIndex + 1) % messages.length;
       setLoadingMessage(messages[messageIndex]);
-    }, 5000);
+    }, 10000);
 
     if (!code.trim()) {
       setError("Please enter a room code!")
@@ -46,7 +46,7 @@ function JoinRoom() {
       setError("")
       const room = await getRoom(code.trim().toUpperCase())
       setRoom(room)
-      
+
       clearInterval(interval);
 
       navigate("/enter-username")
@@ -76,7 +76,7 @@ function JoinRoom() {
         {error && <p className="error-message">{error}</p>}
 
         {
-          loading &&
+          loading && loadingMessage != "" &&
           <p>{loadingMessage}</p>
         }
 

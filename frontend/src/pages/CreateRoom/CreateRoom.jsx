@@ -23,8 +23,8 @@ function CreateRoom() {
 
         const messages = [
             "",
-            "This might take a little while. Please wait...",
-            `Fetching ${selectedYear} contestants...`,
+            `Fetching Eurovision ${selectedYear} contestants...`,
+            "This might take a little while...",
             "Creating your Eurovision room..."
         ];
 
@@ -34,7 +34,7 @@ function CreateRoom() {
         const interval = setInterval(() => {
             messageIndex = (messageIndex + 1) % messages.length;
             setLoadingMessage(messages[messageIndex]);
-        }, 5000);
+        }, 10000);
 
         try {
             const room = await createRoom(selectedYear);
@@ -79,7 +79,7 @@ function CreateRoom() {
 
 
                 {
-                    loading &&
+                    loading && loadingMessage != "" &&
                     <p>{loadingMessage}</p>
                 }
 
