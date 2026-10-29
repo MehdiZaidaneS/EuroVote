@@ -7,12 +7,13 @@ import { getPointsGivenByUser, updatePointsPosition } from '../../api/pointsApi'
 import { getCountryFlag } from '../../api/restCountries'
 import VotingCard from './VotingCard'
 import { useNavigate } from 'react-router'
+import { getUsername } from '../../api/user'
 
 function Voting() {
     const { room, setRoom } = useRoom()
     const { user, setUser } = useUser()
     const [loading, setLoading] = useState(false)
-
+    const [username, setUsername] = useState("")
     const countriesContainerRef = useRef(null);
     const scrollPositionRef = useRef(0);
 
@@ -25,6 +26,8 @@ function Voting() {
             return;
         }
 
+        getPlayername(user)
+
         if (user.submitted === "True") {
             navigate("/result");
         }
@@ -32,7 +35,7 @@ function Voting() {
 
     const [results, setResults] = useState(null)
 
-    
+
     const [pointsGiven, setPointsGiven] = useState([])
     const [selectedCountry, setSelectedCountry] = useState(null);
 
@@ -45,7 +48,7 @@ function Voting() {
     }, [results, selectedCountry]);
 
 
-    
+
 
 
 
@@ -54,6 +57,19 @@ function Voting() {
             loadVotingData()
         }
     }, [room?.year, room?.id, user?.id])
+
+
+    const getPlayername = async (user) => {
+        try {
+            const name = await getUsername(user.id)
+
+            setUsername(name)
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
 
 
     const loadVotingData = async () => {
@@ -111,7 +127,7 @@ function Voting() {
                 })
             );
 
-            
+
 
             navigate("/preview");
 
@@ -130,7 +146,7 @@ function Voting() {
     return (
         <div>
             <h4 className='code'> Code: <em>{room?.code}</em></h4>
-            <h4 className='username'>Welcome, {user?.name}</h4>
+            <h4 className='username'>Welcome, {username}</h4>
 
             {loading && !selectedCountry && (
                 <div className="voting-loading">

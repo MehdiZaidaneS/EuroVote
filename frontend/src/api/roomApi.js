@@ -75,7 +75,7 @@ export async function joinRoom(code, name) {
         throw new Error("JOIN_ROOM_FAILED");
     }
 
-    return await user;
+    return await user.id;
 }
 
 export async function getParticipatingCountries(year) {

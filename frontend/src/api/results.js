@@ -1,7 +1,7 @@
 import { getPointsGivenByUser } from "./pointsApi"
 import { getParticipatingCountries, getRoom } from "./roomApi"
 
-export function compareIndividualResult(results, pointsGiven, user) {
+export function compareIndividualResult(results, pointsGiven, username) {
     let score = 0
     let perfect = 0
     let furthest = null
@@ -130,7 +130,7 @@ export function compareIndividualResult(results, pointsGiven, user) {
 
 
     return {
-        user: user.name,
+        user: username,
         score: scaledScore,
         furthest: furthest,
         closest: closest,

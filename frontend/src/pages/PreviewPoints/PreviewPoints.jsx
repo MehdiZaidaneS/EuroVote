@@ -6,6 +6,7 @@ import "./PreviewPoints.css"
 import PreviewCard from './PreviewCard'
 import { useNavigate } from 'react-router'
 import { getCountryFlag } from '../../api/restCountries'
+import { getUsername } from '../../api/user'
 
 
 function PreviewPoints() {
@@ -18,6 +19,7 @@ function PreviewPoints() {
   const [loading, setLoading] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [dragging, setDragging] = useState(false)
+  const [username, setUsername] = useState("")
 
 
   useEffect(() => {
@@ -26,6 +28,8 @@ function PreviewPoints() {
       navigate("/");
       return;
     }
+
+    getPlayername(user)
 
     if (user.submitted === "True") {
       navigate("/result")
@@ -37,6 +41,19 @@ function PreviewPoints() {
 
 
   }, [])
+
+
+  const getPlayername = async (user) => {
+    try {
+      const name = await getUsername(user.id)
+
+      setUsername(name)
+
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
 
   const handleUpdatePoints = async (roomId, userId, pointCountryId, points) => {
     try {
@@ -94,7 +111,7 @@ function PreviewPoints() {
 
   const handleDragOver = (event) => {
     event.preventDefault();
-    
+
   }
 
   const handleSubmit = async () => {
@@ -114,7 +131,7 @@ function PreviewPoints() {
         })
       );
 
-      setUser({ ...user, submitted: "True" });
+      setUser({ id: user.id, submitted: "True" });
       navigate("/result")
     } catch (error) {
       console.error("Failed to update votes:", error);
@@ -142,7 +159,7 @@ function PreviewPoints() {
 
     setPointsGiven(newPoints)
     setDragging(false)
-  
+
   };
 
   const navigate = useNavigate()
@@ -150,7 +167,7 @@ function PreviewPoints() {
   return (
     <div className='preview-points'>
       <h4 className='code'> Code: <em>{room?.code}</em></h4>
-      <h4 className='username'>Welcome, {user?.name}</h4>
+      <h4 className='username'>Welcome, {username}</h4>
 
       {loading ? (
         <div className="preview-loading">
@@ -172,7 +189,7 @@ function PreviewPoints() {
               <div className='all-country-points' id={dragging ? "isDragging" : "notDragging"}>
                 {pointsGiven.map((point, index) => {
                   return (
-                    <PreviewCard key={point.id} pointsGiven={pointsGiven} index={index} setPointsGiven={setPointsGiven} point={point} position={index + 1} last={pointsGiven.length} handleGetPointsByUser={handleGetPointsByUser} onDragStart={() => handleDragStart(index)} onDragOver={handleDragOver} onDrop={() => handleDrop(index)}  onDragEnd={() => setDragging(false)} setUpdating={setUpdating} />
+                    <PreviewCard key={point.id} pointsGiven={pointsGiven} index={index} setPointsGiven={setPointsGiven} point={point} position={index + 1} last={pointsGiven.length} handleGetPointsByUser={handleGetPointsByUser} onDragStart={() => handleDragStart(index)} onDragOver={handleDragOver} onDrop={() => handleDrop(index)} onDragEnd={() => setDragging(false)} setUpdating={setUpdating} />
                   )
                 })}
               </div>

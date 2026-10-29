@@ -39,7 +39,7 @@ function EnterUsername() {
             setError("")
             const playerJoinedRoom = await joinRoom(room.code, username.trim())
             setUser({
-                ...playerJoinedRoom,
+                id: playerJoinedRoom,
                 submitted: "False"
             })
 

@@ -44,7 +44,7 @@ function App() {
 
 
       <footer>
-        <p>© 2026 Penta · EuroVote</p>
+        <p>© 2026 Pentu · EuroVote</p>
       </footer>
 
     </div>
