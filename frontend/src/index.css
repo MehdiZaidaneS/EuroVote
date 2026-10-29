@@ -129,6 +129,10 @@ body {
     vertical-align: middle;
 }
 
+.loadingMsg{
+    font-size: 12px;
+}
+
 @keyframes spin {
     to {
         transform: rotate(360deg);

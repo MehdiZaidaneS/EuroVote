@@ -15,21 +15,28 @@ function JoinRoom() {
   const [loadingMessage, setLoadingMessage] = useState("");
 
 
-  const handleJoinRoom = async () => {
 
+  const handleJoinRoom = async () => {
     if (loading) return;
 
-    setLoading(true);
+    if (!code.trim()) {
+      setError("Please enter a room code!");
+      return;
+    }
 
+    setLoading(true);
+    setError("");
 
     const messages = [
-      "",
-      `Searching your Eurovision room...`,
-      "This might take a little while...",
-      "Joining your Eurovision room..."
+      "Searching for your Eurovision room...",
+      "Checking your room code...",
+      "Connecting you to the Eurovision party...",
+      "Almost there! Getting your room ready...",
+      "Preparing your Eurovision experience..."
     ];
 
     let messageIndex = 0;
+
     setLoadingMessage(messages[messageIndex]);
 
     const interval = setInterval(() => {
@@ -37,29 +44,24 @@ function JoinRoom() {
       setLoadingMessage(messages[messageIndex]);
     }, 10000);
 
-    if (!code.trim()) {
-      setError("Please enter a room code!")
-      return
-    }
-
     try {
-      setError("")
-      const room = await getRoom(code.trim().toUpperCase())
-      setRoom(room)
+      const room = await getRoom(code.trim().toUpperCase());
 
-      clearInterval(interval);
+      setRoom(room);
 
-      navigate("/enter-username")
+      navigate("/enter-username");
 
     } catch (error) {
       console.error(error);
-      clearInterval(interval);
-      setError("Room not found, try again!")
+
+      setError("Room not found. Please check the code and try again!");
+
     } finally {
       clearInterval(interval);
       setLoading(false);
     }
-  }
+  };
+
 
 
   return (
@@ -77,7 +79,7 @@ function JoinRoom() {
 
         {
           loading && loadingMessage != "" &&
-          <p>{loadingMessage}</p>
+          <p className='loadingMsg'>{loadingMessage}</p>
         }
 
 

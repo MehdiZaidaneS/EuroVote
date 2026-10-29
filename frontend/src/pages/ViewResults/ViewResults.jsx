@@ -78,11 +78,13 @@ function ViewResults() {
     setLoading(true);
 
     const messages = [
-      "",
-      `Searching your Eurovision room...`,
-      "This might take a little while...",
-      "Joining your Eurovision room..."
+      "Searching for your Eurovision room...",
+      "Verifying your room code...",
+      "Connecting you to the Eurovision party...",
+      "Almost there! Getting your room ready...",
+      "Welcome! Your Eurovision room is ready!"
     ];
+
 
     let messageIndex = 0;
     setLoadingMessage(messages[messageIndex]);
@@ -131,7 +133,7 @@ function ViewResults() {
 
             {
               loading && loadingMessage != "" &&
-              <p>{loadingMessage}</p>
+              <p className='loadingMsg'>{loadingMessage}</p>
             }
 
             <button

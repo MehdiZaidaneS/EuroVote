@@ -22,10 +22,11 @@ function CreateRoom() {
 
 
         const messages = [
-            "",
-            `Fetching Eurovision ${selectedYear} contestants...`,
-            "This might take a little while...",
-            "Creating your Eurovision room..."
+            `Fetching the Eurovision ${selectedYear} contestants...`,
+            "Gathering all the countries and their contestants...",
+            "Almost there! Preparing your Eurovision experience...",
+            "Setting up your room. Get ready to vote!",
+            "Final touches... Your Eurovision room is on its way!"
         ];
 
         let messageIndex = 0;
@@ -80,7 +81,7 @@ function CreateRoom() {
 
                 {
                     loading && loadingMessage != "" &&
-                    <p>{loadingMessage}</p>
+                    <p className='loadingMsg'>{loadingMessage}</p>
                 }
 
                 <button
