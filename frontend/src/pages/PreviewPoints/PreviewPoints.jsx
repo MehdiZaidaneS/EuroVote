@@ -17,6 +17,7 @@ function PreviewPoints() {
   const [draggedIndex, setDraggedIndex] = useState(null)
   const [loading, setLoading] = useState(false);
   const [updating, setUpdating] = useState(false);
+  const [dragging, setDragging] = useState(false)
 
 
   useEffect(() => {
@@ -87,10 +88,13 @@ function PreviewPoints() {
 
   const handleDragStart = (index) => {
     setDraggedIndex(index)
+    setDragging(true)
+
   }
 
   const handleDragOver = (event) => {
     event.preventDefault();
+    
   }
 
   const handleSubmit = async () => {
@@ -122,6 +126,7 @@ function PreviewPoints() {
 
   const handleDrop = async (dropIndex) => {
     if (draggedIndex === null || draggedIndex === dropIndex || updating) {
+      setDragging(false)
       return;
     }
 
@@ -136,6 +141,8 @@ function PreviewPoints() {
     newPoints.splice(dropIndex, 0, draggedCard);
 
     setPointsGiven(newPoints)
+    setDragging(false)
+  
   };
 
   const navigate = useNavigate()
@@ -162,10 +169,10 @@ function PreviewPoints() {
           ) : (
             <>
               <h3 className='back-button'>Move or edit your votes before submitting...</h3>
-              <div className='all-country-points'>
+              <div className='all-country-points' id={dragging ? "isDragging" : "notDragging"}>
                 {pointsGiven.map((point, index) => {
                   return (
-                    <PreviewCard key={point.id} pointsGiven={pointsGiven} index={index} setPointsGiven={setPointsGiven} point={point} position={index + 1} last={pointsGiven.length} handleGetPointsByUser={handleGetPointsByUser} onDragStart={() => handleDragStart(index)} onDragOver={handleDragOver} onDrop={() => handleDrop(index)} setUpdating={setUpdating} />
+                    <PreviewCard key={point.id} pointsGiven={pointsGiven} index={index} setPointsGiven={setPointsGiven} point={point} position={index + 1} last={pointsGiven.length} handleGetPointsByUser={handleGetPointsByUser} onDragStart={() => handleDragStart(index)} onDragOver={handleDragOver} onDrop={() => handleDrop(index)}  onDragEnd={() => setDragging(false)} setUpdating={setUpdating} />
                   )
                 })}
               </div>

@@ -4,7 +4,7 @@ import { useRoom } from '../../RoomContext'
 import { useUser } from '../../UserContext'
 import { updatePointsPosition, updatePointstoCountry } from '../../api/pointsApi'
 
-function PreviewCard({ point, position, setPointsGiven, pointsGiven, last, onDragStart, onDragOver, onDrop }) {
+function PreviewCard({ point, position, setPointsGiven, pointsGiven, last, onDragStart, onDragOver, onDrop, onDragEnd }) {
 
 
     useEffect(() => {
@@ -27,7 +27,7 @@ function PreviewCard({ point, position, setPointsGiven, pointsGiven, last, onDra
     };
 
     return (
-        <div className={last === position ? `country-points position-last` : `country-points position-${position}`} draggable={true} onDragStart={onDragStart} onDragOver={onDragOver} onDrop={onDrop} >
+        <div className={last === position ? `country-points position-last` : `country-points position-${position}`} draggable={true} onDragStart={onDragStart} onDragOver={onDragOver} onDrop={onDrop} onDragEnd={onDragEnd} >
             <p className="country-position">{position}</p>
 
             <img src={point.flag} width={20} height={15} alt="" />
