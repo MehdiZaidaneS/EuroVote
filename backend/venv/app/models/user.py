@@ -2,12 +2,18 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from core.database import Base
 from models.room import room_players
+import uuid
 
 
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(
+        String(36),
+        primary_key=True,
+        default=lambda: str(uuid.uuid4())
+    )
+
     name = Column(String, nullable=False)
 
     points = relationship("Points", back_populates="player")

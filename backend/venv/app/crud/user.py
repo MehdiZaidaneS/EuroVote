@@ -18,7 +18,7 @@ def create_user(db: Session, name: str):
 def get_users(db: Session):
     return db.query(User).all()
 
-def get_user(db: Session, id: int):
+def get_user(db: Session, id: str):
     return db.get(User, id)
 
 

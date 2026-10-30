@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Table, ForeignKey
 from sqlalchemy.orm import relationship
 from core.database import Base
+import uuid
 
 
 room_players = Table(
@@ -14,7 +15,11 @@ room_players = Table(
 class Room(Base):
     __tablename__ = "rooms"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(
+        String(36),
+        primary_key=True,
+        default=lambda: str(uuid.uuid4())
+    )
     year = Column(Integer, nullable=False)
     code = Column(String, nullable=False, unique=True)
 

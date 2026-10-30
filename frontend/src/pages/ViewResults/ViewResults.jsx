@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react'
 import './ViewResults.css'
-import { getParticipatingCountries, getRoom } from '../../api/roomApi'
+import { getParticipatingCountries, getRoom, getRoomWithCode } from '../../api/roomApi'
 import { getPointsGivenByUser } from '../../api/pointsApi'
 import { compareIndividualResult, compareRoomResult } from "../../api/results"
 import { useRoom } from '../../RoomContext'
@@ -47,6 +47,7 @@ function ViewResults() {
   useEffect(() => {
     if (room) {
       handleCompareRoomResult()
+      getRoomCode(room)
     }
   }, [room])
 
@@ -65,6 +66,16 @@ function ViewResults() {
       setLoading(false);
     }
   };
+
+  const getRoomCode = async (myRoom) =>{
+          try {
+              const room_response = await getRoom(myRoom)
+              setCode(room_response.code)
+  
+          } catch (error) {
+              console.error(error)
+          }
+      }
 
 
   const handleJoinRoom = async () => {
@@ -96,11 +107,12 @@ function ViewResults() {
 
     try {
       setError("");
-      const room = await getRoom(code.trim().toUpperCase());
+      const roomData = await getRoomWithCode(code.trim());
 
-      clearInterval(interval)
+      clearInterval(interval);
 
-      setRoom(room);
+      setCode(roomData.code);
+      setRoom(roomData.id);
     } catch (error) {
       console.error(error);
       clearInterval(interval)
@@ -158,7 +170,7 @@ function ViewResults() {
       {
         room &&
         <div className='results-container'>
-          <h4 className='code'> Code: <em>{room?.code}</em></h4>
+          <h4 className='code'> Code: <em>{code}</em></h4>
 
           {loading ? (
             <div className="calculating-results">
@@ -213,7 +225,7 @@ function ViewResults() {
                           />
                         }
                         {
-                          roomResults.perfect.user != "None" &&
+                          roomResults.perfect.user.length > 0 &&
                           <IndividualResultCard
                             icon="⭐"
                             upper={`${roomResults.perfect.user}`}

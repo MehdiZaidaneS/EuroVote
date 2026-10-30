@@ -3,7 +3,7 @@ import { useRoom } from '../../RoomContext'
 import { useUser } from '../../UserContext'
 import { compareIndividualResult } from '../../api/results'
 import { getPointsGivenByUser } from '../../api/pointsApi'
-import { getParticipatingCountries } from '../../api/roomApi'
+import { getParticipatingCountries, getRoom } from '../../api/roomApi'
 import { useNavigate } from 'react-router'
 import IndividualResultCard from './IndividualResultCard'
 import "./IndividualResult.css"
@@ -14,6 +14,8 @@ function IndividualResult() {
     const { room, setRoom } = useRoom()
     const { user, setUser } = useUser()
     const [loading, setLoading] = useState(false)
+    const [year, setYear] = useState()
+    const [code, setCode] = useState("")
 
     const [results, setResults] = useState([])
     const [pointsGiven, setPointsGiven] = useState([])
@@ -23,6 +25,10 @@ function IndividualResult() {
 
     })
 
+    const navigate = useNavigate();
+
+
+
 
     useEffect(() => {
         if (!room || !user) {
@@ -30,64 +36,65 @@ function IndividualResult() {
             return;
         }
 
-        getPlayername(user)
-
         if (user.submitted === "False") {
-            navigate("/voting")
+            navigate("/voting");
+            return;
         }
 
-        handleLoadResults();
-    }, [room?.id, room?.year, user?.id]);
+        const loadResults = async () => {
+            setLoading(true);
 
-    
-    const getPlayername = async (user) => {
-        try {
-            const name = await getUsername(user.id)
+            try {
+                // 1. Fetch room information first
+                const roomResponse = await getRoom(room);
 
-            setUsername(name)
+                const roomYear = roomResponse.year;
+                const roomCode = roomResponse.code;
 
-        } catch (error) {
-            console.log(error)
-        }
+                // Prevent API calls with an undefined year
+                if (!roomYear) {
+                    throw new Error("Room year is undefined");
+                }
 
-    }
+                // 2. Fetch all required data
+                const [countries, points, playerName] =
+                    await Promise.all([
+                        getParticipatingCountries(roomYear),
+                        getPointsGivenByUser(room, user.id),
+                        getUsername(user.id)
+                    ]);
 
+                // 3. Update React states
+                setYear(roomYear);
+                setCode(roomCode);
+                setUsername(playerName);
 
-    const handleLoadResults = async () => {
-        setLoading(true);
+                setResults(countries);
+                setPointsGiven(points);
 
-        try {
-            const [countries, points] = await Promise.all([
-                getParticipatingCountries(room.year),
-                getPointsGivenByUser(room.id, user.id)
-            ]);
+                // 4. Calculate the individual result
+                const calculatedResult = compareIndividualResult(
+                    countries,
+                    points,
+                    playerName
+                );
 
-            setResults(countries);
-            setPointsGiven(points);
+                setMyResult(calculatedResult);
 
-            const calculatedResult = compareIndividualResult(
-                countries,
-                points,
-                username
-            );
+            } catch (error) {
+                console.error("Error loading results:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-            setMyResult(calculatedResult);
+        loadResults();
 
-
-
-        } catch (error) {
-            console.error("Error loading results:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const navigate = useNavigate();
-
+    }, [room, user?.id, user?.submitted, navigate]);
 
     return (
         <div>
-            <h4 className='code'> Code: <em>{room?.code}</em></h4>
+            <h4 className='code'> Code: <em>{code}</em></h4>
             <h4 className='username'>Welcome, {username}</h4>
 
             {loading ? (

@@ -1,6 +1,6 @@
 
 import './JoinRoom.css'
-import { getRoom } from '../../api/roomApi'
+import { getRoom, getRoomWithCode } from '../../api/roomApi'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useRoom } from '../../RoomContext'
@@ -45,9 +45,9 @@ function JoinRoom() {
     }, 10000);
 
     try {
-      const room = await getRoom(code.trim().toUpperCase());
+      const room = await getRoomWithCode(code.trim().toUpperCase());
 
-      setRoom(room);
+      setRoom(room.id);
 
       navigate("/enter-username");
 

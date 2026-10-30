@@ -3,8 +3,9 @@ from pydantic import BaseModel
 class UserCreate(BaseModel):
     name: str
 
+
 class UserResponse(BaseModel):
-    id: int
+    id: str
     name: str
 
     class Config:

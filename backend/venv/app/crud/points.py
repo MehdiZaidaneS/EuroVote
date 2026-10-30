@@ -1,11 +1,16 @@
-
 from sqlalchemy.orm import Session
 from models.points import Points
 from models.room import Room
 from models.user import User
 
 
-def give_points(db: Session,country_id: int,point_value: int,player_id: int,room_id: int):
+def give_points(
+    db: Session,
+    country_id: int,
+    point_value: int,
+    player_id: str,
+    room_id: str
+):
     room = db.query(Room).filter(Room.id == room_id).first()
     user = db.get(User, player_id)
 
@@ -29,11 +34,12 @@ def give_points(db: Session,country_id: int,point_value: int,player_id: int,room
     return new_points
 
 
-def update_points(db: Session,
+def update_points(
+    db: Session,
     country_id: int,
     point_value: int,
-    player_id: int,
-    room_id: int
+    player_id: str,
+    room_id: str
 ):
     room = db.query(Room).filter(Room.id == room_id).first()
     user = db.get(User, player_id)
@@ -62,8 +68,9 @@ def update_points(db: Session,
 
 
 def give_position(db: Session, id: int, position: int):
-
-    existing_points = db.query(Points).filter(Points.id == id).first()
+    existing_points = db.query(Points).filter(
+        Points.id == id
+    ).first()
 
     if existing_points is None:
         return None
@@ -76,11 +83,25 @@ def give_position(db: Session, id: int, position: int):
     return existing_points
 
 
+def get_point_from_country(
+    db: Session,
+    room_id: str,
+    player_id: str,
+    country_id: int
+):
+    return db.query(Points).filter(
+        Points.room_id == room_id,
+        Points.player_id == player_id,
+        Points.country_id == country_id
+    ).first()
 
 
-
-def get_point_from_country(db:Session, room_id:int, player_id:int, country_id:int):
-    return db.query(Points).filter(Points.room_id == room_id).filter(Points.player_id == player_id).filter(Points.country_id== country_id).first()
-
-def get_all_points_from_user(db: Session,room_id: int, player_id: int):
-    return db.query(Points).filter(Points.player_id == player_id).filter(Points.room_id == room_id).all()
+def get_all_points_from_user(
+    db: Session,
+    room_id: str,
+    player_id: str
+):
+    return db.query(Points).filter(
+        Points.player_id == player_id,
+        Points.room_id == room_id
+    ).all()

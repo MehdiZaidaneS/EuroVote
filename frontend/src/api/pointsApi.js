@@ -1,23 +1,19 @@
 
 const API_URL = `${import.meta.env.VITE_API_URL}/points`
 
-export async function getPointsFromCountry(room_id, player_id, country_id){
+export async function getPointsFromCountry(room_id, player_id, country_id) {
 
-    const response = await fetch(`${API_URL}/${room_id}/${player_id}/${country_id}`,{
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
+    const response = await fetch(
+        `${API_URL}/${room_id}/${player_id}/${country_id}`
+    );
 
-
-    if (!response.ok){
-        throw new Error("Failed to get points from specific country")
+    if (!response.ok) {
+        throw new Error("Failed to get points from specific country");
     }
 
-    const responseJson = await response.json()
+    const responseJson = await response.json();
 
-    return responseJson.points;
+    return responseJson?.points ?? null;
 }
 
 

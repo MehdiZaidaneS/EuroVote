@@ -6,10 +6,11 @@ class RoomCreate(BaseModel):
 
 
 class JoinRoomCreate(BaseModel):
-    player_id: int
+    player_id: str
+
 
 class PlayerResponse(BaseModel):
-    id: int
+    id: str
     name: str
 
     class Config:
@@ -17,7 +18,7 @@ class PlayerResponse(BaseModel):
 
 
 class RoomResponse(BaseModel):
-    id: int
+    id: str
     year: int
     code: str
     players: list[PlayerResponse]

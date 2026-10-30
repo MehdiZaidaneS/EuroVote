@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import "./EnterUsername.css"
 import { useNavigate } from 'react-router'
 import { useRoom } from '../../RoomContext'
-import { joinRoom } from '../../api/roomApi'
+import { getRoom, joinRoom } from '../../api/roomApi'
 import { useUser } from '../../UserContext'
 
 
@@ -15,12 +15,33 @@ function EnterUsername() {
     const [loading, setLoading] = useState(false)
     const [username, setUsername] = useState("")
     const [error, setError] = useState("")
+    const [code, setCode] = useState("")
 
-    useEffect(() =>{
-        if (room && user) {
-            navigate("/voting")
+    useEffect(() => {
+
+        if (!room) {
+            navigate("/");
+            return;
         }
-    })
+
+        if (room && user) {
+            navigate("/voting");
+            return;
+        }
+
+        const getRoomCode = async () => {
+            try {
+                const room_response = await getRoom(room);
+                setCode(room_response.code);
+
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        getRoomCode();
+
+    }, [room, user, navigate]);
 
     const handleJoinRoom = async (e) => {
         e.preventDefault()
@@ -37,7 +58,7 @@ function EnterUsername() {
         try {
 
             setError("")
-            const playerJoinedRoom = await joinRoom(room.code, username.trim())
+            const playerJoinedRoom = await joinRoom(room, username.trim())
             setUser({
                 id: playerJoinedRoom,
                 submitted: "False"
@@ -53,21 +74,21 @@ function EnterUsername() {
 
             if (error.message === "USERNAME_EXISTS") {
                 setError("This username already exists!");
-            }else if(error.message === "PLAYER_EXISTS"){
+            } else if (error.message === "PLAYER_EXISTS") {
                 setError("Username already in use!")
             } else if (error.message === "JOIN_ROOM_FAILED") {
                 setError("Could not join the room. Please try again.");
             } else {
                 setError("Could not create user. Please try again.");
             }
-        }finally {
+        } finally {
             setLoading(false);
         }
     }
 
     return (
         <div>
-            <h4 className='code'> Code: <em>{room?.code}</em></h4>
+            <h4 className='code'> Code: <em>{code}</em></h4>
 
             <h1 className='logo' onClick={() => { navigate("/"); setRoom(null); }}>Eurovote</h1>
             <h3>Enter username:</h3>
@@ -87,18 +108,18 @@ function EnterUsername() {
 
 
                     <button
-                    className="action-button"
-                    type='submit'
-                    disabled={loading}
-                >
-                    {loading ? (
-                        <>
-                            <span className="spinner"></span>
-                        </>
-                    ) : (
-                        "Join Room"
-                    )}
-                </button>
+                        className="action-button"
+                        type='submit'
+                        disabled={loading}
+                    >
+                        {loading ? (
+                            <>
+                                <span className="spinner"></span>
+                            </>
+                        ) : (
+                            "Join Room"
+                        )}
+                    </button>
                 </form>
             </div>
             <button className="leave-button" onClick={() => { navigate("/"); setRoom(null); }}> Leave Room</button>

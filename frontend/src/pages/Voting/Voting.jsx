@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useRoom } from '../../RoomContext'
 import { useUser } from '../../UserContext'
 import "./Voting.css"
-import { getParticipatingCountries } from '../../api/roomApi'
+import { getParticipatingCountries, getRoom } from '../../api/roomApi'
 import { getPointsGivenByUser, updatePointsPosition } from '../../api/pointsApi'
 import { getCountryFlag } from '../../api/restCountries'
 import VotingCard from './VotingCard'
@@ -12,6 +12,8 @@ import { getUsername } from '../../api/user'
 function Voting() {
     const { room, setRoom } = useRoom()
     const { user, setUser } = useUser()
+    const [year, setYear] = useState()
+    const [code, setCode] = useState("")
     const [loading, setLoading] = useState(false)
     const [username, setUsername] = useState("")
     const countriesContainerRef = useRef(null);
@@ -27,6 +29,8 @@ function Voting() {
         }
 
         getPlayername(user)
+        getRoomYear(room)
+        getRoomCode(room)
 
         if (user.submitted === "True") {
             navigate("/result");
@@ -34,6 +38,28 @@ function Voting() {
     }, [room, user, navigate]);
 
     const [results, setResults] = useState(null)
+
+    const getRoomYear = async (myRoom) => {
+        try {
+            const room_response = await getRoom(myRoom)
+
+            setYear(room_response.year)
+
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const getRoomCode = async (myRoom) => {
+        try {
+            const room_response = await getRoom(myRoom)
+
+            setCode(room_response.code)
+
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
 
     const [pointsGiven, setPointsGiven] = useState([])
@@ -53,11 +79,10 @@ function Voting() {
 
 
     useEffect(() => {
-        if (room?.year && room?.id && user?.id) {
+        if (room && user?.id && year) {
             loadVotingData()
         }
-    }, [room?.year, room?.id, user?.id])
-
+    }, [room, user?.id, year])
 
     const getPlayername = async (user) => {
         try {
@@ -79,7 +104,7 @@ function Voting() {
         setLoading(true);
 
         try {
-            const countries = await getParticipatingCountries(room.year)
+            const countries = await getParticipatingCountries(year)
 
             const resultsWithFlags = await Promise.all(
                 countries.map(async (result) => {
@@ -92,7 +117,7 @@ function Voting() {
                 })
             )
 
-            const points = await getPointsGivenByUser(room.id, user.id)
+            const points = await getPointsGivenByUser(room, user.id)
 
             //await new Promise(resolve => setTimeout(resolve, 10000));
 
@@ -145,7 +170,7 @@ function Voting() {
 
     return (
         <div>
-            <h4 className='code'> Code: <em>{room?.code}</em></h4>
+            <h4 className='code'> Code: <em>{code}</em></h4>
             <h4 className='username'>Welcome, {username}</h4>
 
             {loading && !selectedCountry && (

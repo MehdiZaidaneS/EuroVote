@@ -15,12 +15,14 @@ export async function createRoom(year) {
         throw new Error("Failed to create room");
     }
 
-    return await response.json();
+    const responseJson =  await response.json();
+
+    return responseJson.id
 }
 
 
-export async function getRoom(code) {
-    const response = await fetch(`${API_URL}/rooms/${code}`, {
+export async function getRoom(id) {
+    const response = await fetch(`${API_URL}/rooms/${id}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -28,13 +30,13 @@ export async function getRoom(code) {
     });
 
     if (!response.ok) {
-        throw new Error("Failed to create room");
+        throw new Error("Failed to get room");
     }
 
     return await response.json();
 }
 
-export async function joinRoom(code, name) {
+export async function joinRoom(id, name) {
 
     const response1 = await fetch(`${API_URL}/users`, {
         method: "POST",
@@ -57,7 +59,7 @@ export async function joinRoom(code, name) {
     const user = await response1.json();
 
 
-    const response2 = await fetch(`${API_URL}/rooms/${code}`, {
+    const response2 = await fetch(`${API_URL}/rooms/${id}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -94,4 +96,21 @@ export async function getParticipatingCountries(year) {
 
     return await response.json();
 
+}
+
+
+export async function getRoomWithCode(code){
+    const response = await fetch(`${API_URL}/rooms/code/${code}`,{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+
+    })
+
+    if (!response.ok){
+        throw new Error("Failed to get room by code")
+    }
+
+    return await response.json();
 }

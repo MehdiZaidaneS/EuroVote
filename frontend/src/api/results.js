@@ -1,5 +1,5 @@
 import { getPointsGivenByUser } from "./pointsApi"
-import { getParticipatingCountries, getRoom } from "./roomApi"
+import { getParticipatingCountries, getRoom, getRoomWithCode } from "./roomApi"
 
 export function compareIndividualResult(results, pointsGiven, username) {
     let score = 0
@@ -175,7 +175,7 @@ export const compareRoomResult = async (room) => {
 
 
     try {
-        const roomUpdated = await getRoom(room.code)
+        const roomUpdated = await getRoom(room)
         const results = await getParticipatingCountries(roomUpdated.year)
 
 
@@ -196,7 +196,7 @@ export const compareRoomResult = async (room) => {
                 const result = compareIndividualResult(
                     results,
                     sortedPoints,
-                    player
+                    player.name
                 )
 
                 if (result.perfect > perfect.amount) {

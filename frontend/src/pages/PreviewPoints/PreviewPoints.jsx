@@ -7,6 +7,7 @@ import PreviewCard from './PreviewCard'
 import { useNavigate } from 'react-router'
 import { getCountryFlag } from '../../api/restCountries'
 import { getUsername } from '../../api/user'
+import { getRoom } from '../../api/roomApi'
 
 
 function PreviewPoints() {
@@ -20,6 +21,7 @@ function PreviewPoints() {
   const [updating, setUpdating] = useState(false);
   const [dragging, setDragging] = useState(false)
   const [username, setUsername] = useState("")
+  const [code, setCode] = useState("")
 
 
   useEffect(() => {
@@ -35,12 +37,25 @@ function PreviewPoints() {
       navigate("/result")
     }
 
+    getRoomCode(room)
+
     setLoading(true);
 
     handleGetPointsByUser()
 
 
   }, [])
+
+  const getRoomCode = async (myRoom) => {
+    try {
+      const room_response = await getRoom(myRoom)
+
+      setCode(room_response.code)
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
 
   const getPlayername = async (user) => {
@@ -75,7 +90,7 @@ function PreviewPoints() {
 
     try {
 
-      const points_obtained = await getPointsGivenByUser(room.id, user.id)
+      const points_obtained = await getPointsGivenByUser(room, user.id)
 
       const resultsWithFlags = await Promise.all(
         points_obtained.map(async (result) => {
@@ -121,7 +136,7 @@ function PreviewPoints() {
       await Promise.all(
         pointsGiven.map(async (point, index) => {
           await handleUpdatePoints(
-            room.id,
+            room,
             user.id,
             point.country.id,
             point.points
@@ -166,7 +181,7 @@ function PreviewPoints() {
 
   return (
     <div className='preview-points'>
-      <h4 className='code'> Code: <em>{room?.code}</em></h4>
+      <h4 className='code'> Code: <em>{code}</em></h4>
       <h4 className='username'>Welcome, {username}</h4>
 
       {loading ? (

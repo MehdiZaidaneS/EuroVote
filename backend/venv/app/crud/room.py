@@ -10,12 +10,15 @@ def create_room(db: Session, year: int):
     while True:
         code = ''.join(random.choices(string.ascii_uppercase, k=10))
 
-        existing_room = db.query(Room).filter(Room.code == code).first()
+        existing_room = db.query(Room).filter(
+            Room.code == code
+        ).first()
 
         if not existing_room:
             break
 
     new_room = Room(year=year, code=code)
+
     db.add(new_room)
     db.commit()
     db.refresh(new_room)
@@ -23,14 +26,11 @@ def create_room(db: Session, year: int):
     return new_room
 
 
-def join_room(db: Session, code: str, user_id: int):
-    room = db.query(Room).filter(Room.code == code).first()
+def join_room(db: Session, id: str, user_id: str):
+    room = db.query(Room).filter(Room.id == id).first()
     user = db.get(User, user_id)
 
-    if room is None:
-        return None
-
-    if user is None:
+    if room is None or user is None:
         return None
 
     if user in room.players:
@@ -48,6 +48,9 @@ def get_all_rooms(db: Session):
     return db.query(Room).all()
 
 
-def get_room(db: Session, code: str):
+def get_room(db: Session, id: str):
+    return db.query(Room).filter(Room.id == id).first()
 
+
+def get_room_code(db: Session, code: str):
     return db.query(Room).filter(Room.code == code).first()

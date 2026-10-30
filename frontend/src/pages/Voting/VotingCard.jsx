@@ -33,19 +33,25 @@ function VotingCard({ result, setSelectedCountry, loadVotingData }) {
 
     const handleGetPoints = async () => {
         try {
-            const points = await getPointsFromCountry(room.id, user.id, result.country.id)
-            setPoints(points)
-            if (points == null) {
+            const points = await getPointsFromCountry(
+                room,
+                user.id,
+                result.country.id
+            );
+
+            if (points === null) {
+                setPoints(0);
                 setPointsGiven(false);
             } else {
+                setPoints(points);
                 setPointsGiven(true);
             }
 
         } catch (error) {
-            console.log(error)
+            console.error(error);
         }
-    }
-
+    };
+    
     const handleGivePoints = async () => {
 
         if (loading) return;
@@ -55,9 +61,9 @@ function VotingCard({ result, setSelectedCountry, loadVotingData }) {
 
         try {
             if (!pointsGiven) {
-                await givePointstoCountry(room.id, user.id, result.country.id, points)
+                await givePointstoCountry(room, user.id, result.country.id, points)
             } else {
-                await updatePointstoCountry(room.id, user.id, result.country.id, points)
+                await updatePointstoCountry(room, user.id, result.country.id, points)
             }
 
             await loadVotingData()
@@ -85,7 +91,7 @@ function VotingCard({ result, setSelectedCountry, loadVotingData }) {
 
             <div className='voting-card-info'>
                 <h2>{result.country.country_name}</h2>
-                <p>Last participation: {result.country.last_participation_pos}°({result.country.last_participation_year})</p>
+                <p>Last participation: {result.country.last_participation_pos == 0 ? "NQ " : `${result.country.last_participation_pos}° `}({result.country.last_participation_year})</p>
             </div>
 
 
@@ -126,7 +132,7 @@ function VotingCard({ result, setSelectedCountry, loadVotingData }) {
 
             <div className='voting-card-input'>
                 <div className='voting-card-input-field'>
-                    <p className='voting-card-symbol' onClick={increasePoints} style={{background: "green"}}>+
+                    <p className='voting-card-symbol' onClick={increasePoints} style={{ background: "green" }}>+
                     </p>
 
                     <input min={0} max={10} type='number' value={points} autoComplete="off"
@@ -138,7 +144,7 @@ function VotingCard({ result, setSelectedCountry, loadVotingData }) {
                             }
                         }} />
 
-                    <p className='voting-card-symbol' onClick={decreasePoints} style={{background: "red"}}>-</p>
+                    <p className='voting-card-symbol' onClick={decreasePoints} style={{ background: "red" }}>-</p>
                 </div>
 
                 <button
